@@ -7,6 +7,17 @@ enum AbilityState {
 	ACTIVE
 }
 
+signal add_status(status)
+signal remove_status(status)
+signal apply_damage(damage)
+signal apply_heal(heal_amount)
+
+signal inactivated(previous_state)
+signal charging(previous_state)
+signal activated(previous_state)
+signal started_cooldown(duration)
+signal finished_cooldown()
+
 export var cooldown_default = 0.5
 var cooldown_timer = 0
 export var cast_delay = 0.5
@@ -41,12 +52,15 @@ func _handle_inactivate(_active):
 	cast_timer = 0
 	if _active == AbilityState.ACTIVE:
 		cooldown_timer = cooldown_default
+		emit_signal("started_cooldown", cooldown_timer)
+	emit_signal("inactivated", _active)
 
 func _handle_charge(_active):
 	cast_timer = cast_delay
+	emit_signal("charging", _active)
 
 func _handle_activate(_active):
-	pass
+	emit_signal("activated", _active)
 
 func _set_active(_active):
 	if _active == AbilityState.INACTIVE && active != AbilityState.INACTIVE:
@@ -67,6 +81,8 @@ func update(delta, cast_pos):
 	
 func _update_inactive(delta, cast_pos):
 	cooldown_timer -= delta
+	if cooldown_timer <= 0 && cooldown_timer + delta >= 0:
+		emit_signal("finished_cooldown")
 	
 func _update_charging(delta, cast_pos):
 	cast_timer -= delta

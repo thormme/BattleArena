@@ -6,6 +6,10 @@ enum StatusType {
 	DEBUFF
 }
 
+signal status_removed()
+signal status_added()
+signal status_expired()
+
 var _target
 var _duration: float
 var _priority: int
@@ -18,10 +22,10 @@ func _init(target, duration: float, priority: int, type):
 	_type = type
 	
 func handle_added():
-	pass
+	emit_signal("status_added")
 
 func handle_removed():
-	pass
+	emit_signal("status_added")
 
 func handle_damage(damage: int):
 	return damage
@@ -32,4 +36,5 @@ func handle_move(movement: Vector3):
 func handle_update(delta: float):
 	_duration -= delta
 	if _duration <= 0:
+		emit_signal("status_expired")
 		_target.remove_status(self)
