@@ -10,6 +10,7 @@
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 collision_layer = 0
 script = ExtResource( 1 )
+speed = 1
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 1 )

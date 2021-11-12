@@ -1,7 +1,21 @@
 extends Character
 class_name Player
 
-func _get_move_attempt():
+
+func _get_mouse_pos() -> Vector3:
+	var mouse = get_viewport().get_mouse_position()
+
+	var camera = get_viewport().get_camera()
+	if camera == null:
+		return Vector3.ZERO
+	var from = camera.project_ray_origin(mouse)
+	var to = camera.project_ray_normal(mouse)
+	
+	# Intersect mouse ray with plane at origin
+	var cursorPos = Plane(Vector3.UP, 0).intersects_ray(from, to)
+	return cursorPos
+
+func _get_move_attempt_command() -> Vector3:
 	var direction = Vector3.ZERO
 	
 	if Input.is_action_pressed("move_right"):
@@ -17,14 +31,14 @@ func _get_move_attempt():
 	if direction != Vector3.ZERO:
 		direction = direction.normalized()
 	
-	var forward: Vector3 = camera.get_global_transform().basis.z
+	var forward: Vector3 = get_viewport().get_camera().get_global_transform().basis.z
 	forward.y = 0 #remove pitch
 	forward = forward.normalized()
 	
 	direction = direction.rotated(Vector3.UP, forward.angle_to(Vector3.FORWARD) + PI)
 	return direction
 
-func _get_cast_attempt():
+func _get_cast_attempt_command():
 	var ability_indicies = []
 	for ability_index in AbilityIndex:
 		if Input.is_action_pressed(ability_input_name[ability_index as int]):
@@ -32,5 +46,5 @@ func _get_cast_attempt():
 	
 	return ability_indicies
 
-func _get_cast_position():
+func _get_cast_position_command() -> Vector3:
 	return self._get_mouse_pos()

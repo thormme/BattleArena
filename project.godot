@@ -14,12 +14,12 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/Ability.gd"
 }, {
-"base": "Area",
+"base": "Character",
 "class": "Attack",
 "language": "GDScript",
 "path": "res://objects/Attack.gd"
 }, {
-"base": "KinematicBody",
+"base": "CollisionObject",
 "class": "Character",
 "language": "GDScript",
 "path": "res://objects/Character.gd"
@@ -28,6 +28,11 @@ _global_script_classes=[ {
 "class": "HasteStatus",
 "language": "GDScript",
 "path": "res://scripts/status_effects/HasteStatus.gd"
+}, {
+"base": "Node",
+"class": "NetworkManager",
+"language": "GDScript",
+"path": "res://objects/NetworkManager.gd"
 }, {
 "base": "Character",
 "class": "Player",
@@ -54,6 +59,7 @@ _global_script_class_icons={
 "Attack": "",
 "Character": "",
 "HasteStatus": "",
+"NetworkManager": "",
 "Player": "",
 "ShootAbility": "",
 "StatusEffect": "",
