@@ -33,53 +33,57 @@ func _player_connected(id):
 	rpc_id(id, "register_player", my_info)
 	create_player_instance(id)
 
-remote func create_instance(scene_path, init_params, new_name) -> void:
+# Replace with MultiplayerReplicator.spawn in 4.0
+remote func _create_instance(scene_path, init_params, new_name, callback_instance_path: String = "", callback_name: String = "") -> void:
 	if get_tree().get_network_unique_id() == HOST_ID:
 		return
-	_create_node_instance(scene_path, init_params, new_name)
+	_create_node_instance(scene_path, init_params, new_name, callback_instance_path, callback_name)
 
-func _create_node_instance(scene_path, init_params, new_name) -> Node:
+func _create_node_instance(scene_path, init_params, new_name, callback_instance_path: String = "", callback_name: String = "") -> Node:
 	var instance = load(scene_path).instance() # TODO: Cache with preload
 	instance.call("init", init_params)
-	instance.peer_owner_id = HOST_ID
+	if instance.is_class("Character"): # TODO: Is this really needed?
+		instance.peer_owner_id = HOST_ID
 	get_tree().get_root().add_child(instance)
-	if new_name == null:
+	if new_name == "":
 		new_name = instance.get_class() + str(object_id)
 		object_id = object_id + 1
 	instance.set_name(new_name)
 	instance.set_name(instance.get_name().replace("@", "__"))
 	print("tried ", new_name)
 	print("created ", instance.get_path())
+	if callback_instance_path != "":
+		get_node(callback_instance_path).call(callback_name, instance.get_path())
 	return instance
 	
-func create_node_instance(scene_path, init_params) -> Node:
+func create_node_instance(scene_path, init_params, callback_instance_path: String = "", callback_name: String = "") -> Node:
 	if get_tree().get_network_unique_id() != HOST_ID:
 		print("Tried to create object on client!")
 		return null
-	var instance = _create_node_instance(scene_path, init_params, null)
+	var instance = _create_node_instance(scene_path, init_params, "", callback_instance_path, callback_name)
 	print("sending rpc create ", instance.get_name())
-	rpc("create_instance", scene_path, init_params, instance.get_name())
+	rpc("_create_instance", scene_path, init_params, instance.get_name(), callback_instance_path, callback_name)
 	return instance.get_path()
 
-remote func remove_instance(node_path) -> void:
+remote func remove_instance(node_path: String) -> void:
 	if get_tree().get_network_unique_id() == HOST_ID:
 		return
 	_remove_node_instance(node_path)
 
-func _remove_node_instance(node_path) -> void:
+func _remove_node_instance(node_path: String) -> void:
 	print(node_path)
 	get_node(node_path).call_deferred("free")
 	
 	print("removed ", node_path)
 	
-func remove_node_instance(node_path) -> void:
+func remove_node_instance(node_path: String) -> void:
 	if get_tree().get_network_unique_id() != HOST_ID:
 		print("Tried to delete object on client!")
 		return
 	var instance = _remove_node_instance(node_path)
 	rpc("remove_instance", node_path)
 	
-func create_player_instance(id) -> void:
+func create_player_instance(id: int) -> void:
 	print(id)
 	if id == 1:
 		return
@@ -99,7 +103,10 @@ func create_player_instance(id) -> void:
 	emit_signal("player_created", player_instance, local)
 
 func _player_disconnected(id) -> void:
-	player_info.erase(id) # Erase player from info.
+	if get_tree().get_network_unique_id() == HOST_ID:
+		var player_node_path = get_tree().get_root().get_node(str(id)).get_path()
+		player_info.erase(id) # Erase player from info.
+		remove_node_instance(player_node_path)
 
 const PlayerScene: Resource = preload("res://objects/Player.tscn")
 const LocalPlayerScene: Resource = preload("res://objects/LocalPlayer.tscn")

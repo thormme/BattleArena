@@ -1,7 +1,8 @@
 extends StatusEffect
 class_name HasteStatus
 
-func _init(target, duration: float).(target, duration, 50, StatusEffect.StatusType.BUFF):
+func init(params: Array): # duration: float
+	.init([params[0], 50, StatusEffect.StatusType.BUFF])
 	pass
 
 func handle_move(movement: Vector3) -> Vector3:

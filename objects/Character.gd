@@ -34,7 +34,7 @@ var peer_owner_id: int = 1
 var _cast_pos = Vector3.ZERO
 var _cast_attempt: Array = []
 
-var last_cast_ability = AbilityIndex.ABILITY_1
+var _last_cast_ability = AbilityIndex.ABILITY_1
 
 var ability_input_name = [
 	"ability_1",
@@ -133,22 +133,26 @@ func _physics_process(delta) -> void:
 	else:
 		self.translate(_direction.normalized() * speed)
 	
+	# Rotate facing direction
+	if _direction != Vector3.ZERO:
+		$Pivot.transform = $Pivot.transform.looking_at($Pivot.transform.origin + _direction.normalized(), Vector3.UP)
+	
 	_cast_pos = _get_cast_position()
 	if _cast_pos == null:
 		_cast_pos = Vector3.ZERO
 	
-	var last_ability: Ability = _get_ability(last_cast_ability)
+	var last_ability: Ability = _get_ability(_last_cast_ability)
 	var current_priority = 0
 	if last_ability:
 		current_priority = last_ability.get_priority()
 	
+	var is_host = _get_network_id() == 1
+	
 	var requested_abilities = _get_cast_attempt()
-	for ability_index in requested_abilities:
-		var ability: Ability = _get_ability(ability_index)
-		if ability && ability.attempt_cast(current_priority):
-			if last_cast_ability as int != ability_index as int:
-				last_ability.cancel_cast()
-			last_cast_ability = ability_index
+	if is_host:
+		for ability_index in requested_abilities:
+			if _attempt_cast(ability_index, _last_cast_ability):
+				rpc("send_cast_to_client", ability_index, _last_cast_ability)
 	
 	for ability_index in AbilityIndex:
 		var ability: Ability = _get_ability(ability_index)
@@ -159,7 +163,6 @@ func _physics_process(delta) -> void:
 		status.handle_update(delta)
 	
 	
-	var is_host = _get_network_id() == 1
 	var is_owner = _get_network_id() == peer_owner_id
 	if _get_network_id() && (is_host || is_owner):
 		rpc_unreliable("send_update", _direction, transform, requested_abilities, _cast_pos)
@@ -200,10 +203,28 @@ remote func send_cast_update(dir, trans, requested_abilities, cast_pos) -> void:
 	if (from_host && !owned) || from_owner:
 		_cast_attempt = requested_abilities
 
+func _attempt_cast(ability_index, last_cast_ability) -> bool:
+	var was_cast: bool = false
+	var last_ability: Ability = _get_ability(last_cast_ability)
+	var current_priority = 0
+	if last_ability:
+		current_priority = last_ability.get_priority()
+	
+	var ability: Ability = _get_ability(ability_index)
+	if ability && ability.attempt_cast(current_priority):
+		was_cast = true
+		if last_cast_ability as int != ability_index as int:
+			last_ability.cancel_cast()
+		_last_cast_ability = ability_index
+	return was_cast
+
+remote func send_cast_to_client(ability_index, last_cast_ability) -> void:
+	_attempt_cast(ability_index, last_cast_ability)
+
 func add_status(status: StatusEffect) -> void:
 	status_effects.append(status)
 	status_effects.sort_custom(StatusSorter, "sort_status_priority")
-	status.handle_added()
+	status.handle_added(self)
 	
 func remove_status(status: StatusEffect) -> void:
 	status_effects.remove(status_effects.find(status))

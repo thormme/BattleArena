@@ -1,4 +1,4 @@
-extends Reference
+extends Node
 class_name StatusEffect
 
 enum StatusType {
@@ -16,17 +16,18 @@ var _duration: float
 var _priority: int
 var _type
 
-func _init(target, duration: float, priority: int, type):
-	_target = target
-	_duration = duration
-	_priority = priority
-	_type = type
+func init(params: Array): # duration: float, priority: int, type
+	_duration = params[0]
+	_priority = params[1]
+	_type = params[2]
 	
-func handle_added() -> void:
+func handle_added(target) -> void:
+	_target = target
 	emit_signal("status_added")
 
 func handle_removed() -> void:
 	emit_signal("status_expired")
+	get_tree().get_current_scene().get_node("NetworkManager").remove_node_instance(self.get_path())
 
 func handle_damage(damage: int) -> int:
 	return damage
