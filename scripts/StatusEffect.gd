@@ -37,6 +37,6 @@ func handle_move(movement: Vector3) -> Vector3:
 
 func handle_update(delta: float) -> void:
 	_duration -= delta
-	if _duration <= 0:
+	if _duration <= 0 && get_tree().get_network_unique_id() == 1:
 		emit_signal("status_expired")
 		_target.remove_status(self)

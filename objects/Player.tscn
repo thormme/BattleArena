@@ -11,11 +11,11 @@
 script = ExtResource( 1 )
 ability_paths = [ NodePath("Ability1"), NodePath("Ability2"), NodePath("Ability3"), NodePath("Ability4"), NodePath("Ability5"), NodePath("Ability6"), NodePath("Ability7") ]
 
-[node name="MeshInstance" parent="Spatial" index="0"]
-mesh = null
+[node name="MeshInstance" parent="Pivot" index="0"]
+layers = 0
 
-[node name="blue_guy" parent="Spatial" index="1" instance=ExtResource( 6 )]
-transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -1, 0 )
+[node name="Model" parent="Pivot" index="1" instance=ExtResource( 6 )]
+transform = Transform( -0.5, 0, -4.37114e-08, 0, 0.5, 0, 4.37114e-08, 0, -0.5, 0, -1, 0 )
 
 [node name="Ability1" type="Node" parent="." index="2"]
 script = ExtResource( 3 )

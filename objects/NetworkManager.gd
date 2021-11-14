@@ -46,7 +46,11 @@ func _create_node_instance(scene_path, init_params, new_name, callback_instance_
 		instance.peer_owner_id = HOST_ID
 	get_tree().get_root().add_child(instance)
 	if new_name == "":
-		new_name = instance.get_class() + str(object_id)
+		if instance.get_script():
+			new_name = instance.get_script().resource_path.get_file().trim_suffix(".gd")
+		else:
+			new_name = instance.get_class()
+		new_name += str(object_id)
 		object_id = object_id + 1
 	instance.set_name(new_name)
 	instance.set_name(instance.get_name().replace("@", "__"))

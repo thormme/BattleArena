@@ -38,6 +38,17 @@ func _get_move_attempt_command() -> Vector3:
 	direction = direction.rotated(Vector3.UP, forward.angle_to(Vector3.FORWARD) + PI)
 	return direction
 
+func _physics_process(delta: float):
+	#._physics_process(delta) # Called automatically by the engine...
+	
+	# Rotate facing direction
+	if _direction != Vector3.ZERO:
+		var state_machine = $Pivot.get_node("Model").get_node("AnimationTree")["parameters/StateMachine/playback"]
+		state_machine.travel("Run")
+	else:
+		var state_machine = $Pivot.get_node("Model").get_node("AnimationTree")["parameters/StateMachine/playback"]
+		state_machine.travel("Idle")
+
 func _get_cast_attempt_command():
 	var ability_indicies = []
 	for ability_index in AbilityIndex:

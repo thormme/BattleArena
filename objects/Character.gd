@@ -131,7 +131,7 @@ func _physics_process(delta) -> void:
 		var me: Object = self
 		me.move_and_slide(velocity, Vector3.UP)
 	else:
-		self.translate(_direction.normalized() * speed)
+		self.translate(_direction.normalized() * speed * delta)
 	
 	# Rotate facing direction
 	if _direction != Vector3.ZERO:
@@ -180,7 +180,7 @@ func _physics_process(delta) -> void:
 func should_correct_position(trans) -> bool:
 	var position_change = transform.origin - trans.origin
 	var distance_change = position_change.abs()
-	return distance_change > velocity.abs() * 2
+	return distance_change > velocity.abs() * 3.0/60.0
 
 remote func send_update(dir, trans, requested_abilities, cast_pos) -> void:
 	var from_host = get_tree().get_rpc_sender_id() == 1
@@ -225,6 +225,8 @@ func add_status(status: StatusEffect) -> void:
 	status_effects.append(status)
 	status_effects.sort_custom(StatusSorter, "sort_status_priority")
 	status.handle_added(self)
+	if _get_network_id() != 1:
+		status.connect("tree_exiting", self, "remove_status", [status])
 	
 func remove_status(status: StatusEffect) -> void:
 	status_effects.remove(status_effects.find(status))
