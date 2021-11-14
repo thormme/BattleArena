@@ -180,7 +180,7 @@ func _physics_process(delta) -> void:
 func should_correct_position(trans) -> bool:
 	var position_change = transform.origin - trans.origin
 	var distance_change = position_change.abs()
-	return distance_change > velocity.abs() * 3.0/60.0
+	return distance_change > velocity.abs() * 3.0/60.0 #TODO: Use fps/delta
 
 remote func send_update(dir, trans, requested_abilities, cast_pos) -> void:
 	var from_host = get_tree().get_rpc_sender_id() == 1

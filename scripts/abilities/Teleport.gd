@@ -20,7 +20,7 @@ func _update_active(delta, cast_pos) -> void:
 func _handle_activate(_active) -> void:
 	._handle_activate(_active)
 	teleport = 1
-	network_manager.create_node_instance(haste_status.resource_path, [3], get_path(), "_handle_haste_created")
+	network_manager.create_node_instance(haste_status.resource_path, [3], get_parent().get_node("StatusEffects").get_path(), get_path(), "_handle_haste_created")
 
 func _handle_haste_created(haste_node_path: String):
 	var haste: HasteStatus = get_node(haste_node_path)

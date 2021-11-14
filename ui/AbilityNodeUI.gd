@@ -17,7 +17,7 @@ func _ready() -> void:
 func _handle_Ability_charging(_prev_state) -> void:
 	label.text = "Casting"
 	
-func _handle_Ability_started_cooldown(duration) -> void:
+func _handle_Ability_started_cooldown(timer) -> void:
 	cooldown = true
 	
 func _handle_Ability_finished_cooldown() -> void:
@@ -26,7 +26,7 @@ func _handle_Ability_finished_cooldown() -> void:
 	
 func _physics_process(delta) -> void:
 	if cooldown == true:
-		label.text = str(_ability.cooldown_timer).pad_decimals(1)
+		label.text = str(_ability.cooldown_timer.time_left).pad_decimals(1)
 		
 func _handle_player_created(player, local) -> void:
 	if local:

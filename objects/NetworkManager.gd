@@ -34,17 +34,20 @@ func _player_connected(id):
 	create_player_instance(id)
 
 # Replace with MultiplayerReplicator.spawn in 4.0
-remote func _create_instance(scene_path, init_params, new_name, callback_instance_path: String = "", callback_name: String = "") -> void:
+remote func _create_instance(scene_path, init_params, new_name, parent_node_path: String, callback_instance_path: String = "", callback_name: String = "") -> void:
 	if get_tree().get_network_unique_id() == HOST_ID:
 		return
-	_create_node_instance(scene_path, init_params, new_name, callback_instance_path, callback_name)
+	_create_node_instance(scene_path, init_params, new_name, parent_node_path, callback_instance_path, callback_name)
 
-func _create_node_instance(scene_path, init_params, new_name, callback_instance_path: String = "", callback_name: String = "") -> Node:
+func _create_node_instance(scene_path, init_params, new_name, parent_node_path: String, callback_instance_path: String = "", callback_name: String = "") -> Node:
 	var instance = load(scene_path).instance() # TODO: Cache with preload
 	instance.call("init", init_params)
 	if instance.is_class("Character"): # TODO: Is this really needed?
 		instance.peer_owner_id = HOST_ID
-	get_tree().get_root().add_child(instance)
+	var parent_node = get_tree().get_root()
+	if parent_node_path != "":
+		parent_node = get_node(parent_node_path)
+	parent_node.add_child(instance)
 	if new_name == "":
 		if instance.get_script():
 			new_name = instance.get_script().resource_path.get_file().trim_suffix(".gd")
@@ -60,13 +63,13 @@ func _create_node_instance(scene_path, init_params, new_name, callback_instance_
 		get_node(callback_instance_path).call(callback_name, instance.get_path())
 	return instance
 	
-func create_node_instance(scene_path, init_params, callback_instance_path: String = "", callback_name: String = "") -> Node:
+func create_node_instance(scene_path, init_params, parent_node_path: String = "", callback_instance_path: String = "", callback_name: String = "") -> Node:
 	if get_tree().get_network_unique_id() != HOST_ID:
 		print("Tried to create object on client!")
 		return null
-	var instance = _create_node_instance(scene_path, init_params, "", callback_instance_path, callback_name)
+	var instance = _create_node_instance(scene_path, init_params, "", parent_node_path, callback_instance_path, callback_name)
 	print("sending rpc create ", instance.get_name())
-	rpc("_create_instance", scene_path, init_params, instance.get_name(), callback_instance_path, callback_name)
+	rpc("_create_instance", scene_path, init_params, instance.get_name(), parent_node_path, callback_instance_path, callback_name)
 	return instance.get_path()
 
 remote func remove_instance(node_path: String) -> void:
