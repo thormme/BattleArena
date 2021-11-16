@@ -27,7 +27,7 @@ func handle_added(target) -> void:
 
 func handle_removed() -> void:
 	emit_signal("status_expired")
-	get_tree().get_current_scene().get_node("NetworkManager").remove_node_instance(self.get_path())
+	NetworkManager.remove_node_instance(self.get_path())
 
 func handle_damage(damage: int) -> int:
 	return damage

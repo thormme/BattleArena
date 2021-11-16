@@ -236,6 +236,11 @@ func apply_damage(damage: int) -> void:
 	var statuses = status_effects.duplicate()
 	for status in statuses:
 		damage = status.handle_damage(damage)
+	if _get_network_id() == 1:
+		send_damage(damage)
+		rpc("send_damage", damage)
+
+remote func send_damage(damage: int):
 	health -= damage
 	if health <= 0:
 		self.kill()

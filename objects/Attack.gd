@@ -5,8 +5,6 @@ export var destroy_on_contact = true
 export var destroy_on_timeout = true
 export var has_collision = false
 
-onready var network_manager = get_tree().get_current_scene().get_node("NetworkManager")
-
 func init(params: Array):
 	.init([params[2]])
 	self.callv("_init_Attack", params)
@@ -42,4 +40,4 @@ func _on_Timer_timeout() -> void:
 		_destroy()
 
 func _destroy() -> void:
-	network_manager.remove_node_instance(self.get_path())
+	NetworkManager.remove_node_instance(self.get_path())

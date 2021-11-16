@@ -24,15 +24,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://objects/Character.gd"
 }, {
+"base": "ResourceFormatLoader",
+"class": "HTerrainDataLoader",
+"language": "GDScript",
+"path": "res://addons/zylann.hterrain/hterrain_resource_loader.gd"
+}, {
+"base": "ResourceFormatSaver",
+"class": "HTerrainDataSaver",
+"language": "GDScript",
+"path": "res://addons/zylann.hterrain/hterrain_resource_saver.gd"
+}, {
 "base": "StatusEffect",
 "class": "HasteStatus",
 "language": "GDScript",
 "path": "res://scripts/status_effects/HasteStatus.gd"
-}, {
-"base": "Node",
-"class": "NetworkManager",
-"language": "GDScript",
-"path": "res://objects/NetworkManager.gd"
 }, {
 "base": "Character",
 "class": "Player",
@@ -58,8 +63,9 @@ _global_script_class_icons={
 "Ability": "",
 "Attack": "",
 "Character": "",
+"HTerrainDataLoader": "",
+"HTerrainDataSaver": "",
 "HasteStatus": "",
-"NetworkManager": "",
 "Player": "",
 "ShootAbility": "",
 "StatusEffect": "",
@@ -69,8 +75,16 @@ _global_script_class_icons={
 [application]
 
 config/name="Battle Arena 3"
-run/main_scene="res://stages/main.tscn"
+run/main_scene="res://ui/MainMenu.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+NetworkManager="*res://objects/NetworkManager.tscn"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/zylann.hterrain/plugin.cfg" )
 
 [input]
 

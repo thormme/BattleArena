@@ -11,6 +11,6 @@ func _update_active(delta, cast_pos) -> void:
 	var team = get_parent()._team
 	var position = get_parent().transform.origin
 	
-	get_tree().get_current_scene().get_node("NetworkManager").create_node_instance(AttackAbilityScene.resource_path, [position, dir, team])
+	NetworkManager.create_node_instance(AttackAbilityScene.resource_path, [position, dir, team])
 	
 	_set_active(AbilityState.INACTIVE)

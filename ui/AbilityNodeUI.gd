@@ -4,17 +4,17 @@ extends PanelContainer
 var cooldown = false
 export var ability_node_name = "Ability1"
 
-onready var label = get_node("Label")
+onready var label = $BackgroundImage/Label
 
 var _player
 var _ability
-onready var _network_manager = get_tree().get_current_scene().get_node("NetworkManager")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	_network_manager.connect("player_created", self, "_handle_player_created")
+	NetworkManager.connect("player_created", self, "_handle_player_created")
 
 func _handle_Ability_charging(_prev_state) -> void:
+	print("castcharge")
 	label.text = "Casting"
 	
 func _handle_Ability_started_cooldown(timer) -> void:

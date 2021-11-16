@@ -1,5 +1,4 @@
 extends Node
-class_name NetworkManager
 
 export var SERVER_PORT = 8082
 export var MAX_PLAYERS = 20
@@ -9,19 +8,24 @@ const HOST_ID = 1
 
 var object_id = 0
 
-onready var client_button = get_tree().get_current_scene().get_node("Interface").get_node("ClientButton")
-onready var server_button = get_tree().get_current_scene().get_node("Interface").get_node("ServerButton")
+var current_scene = null
+
+#onready var client_button = get_tree().get_current_scene().get_node("Interface").get_node("ClientButton")
+#onready var server_button = get_tree().get_current_scene().get_node("Interface").get_node("ServerButton")
 
 signal player_created(player, local)
 
 func _ready() -> void:
-	client_button.connect("button_up", self, "connect_server")
-	server_button.connect("button_up", self, "connect_client")
+	#client_button.connect("button_up", self, "connect_server")
+	#server_button.connect("button_up", self, "connect_client")
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 	get_tree().connect("network_peer_disconnected", self, "_player_disconnected")
 	get_tree().connect("connected_to_server", self, "_connected_ok")
 	get_tree().connect("connection_failed", self, "_connected_fail")
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
+	
+	var root = get_tree().get_root()
+	current_scene = root.get_child(root.get_child_count() -1)
 
 # Player info, associate ID to data
 var player_info = {}
@@ -92,8 +96,8 @@ func remove_node_instance(node_path: String) -> void:
 	
 func create_player_instance(id: int) -> void:
 	print(id)
-	if id == 1:
-		return
+	#if id == 1:
+	#	return
 	var player_instance
 	var local = false
 	if id == get_tree().get_network_unique_id():
@@ -107,6 +111,8 @@ func create_player_instance(id: int) -> void:
 	get_tree().get_root().add_child(player_instance)
 	if local:
 		player_instance.get_node("Camera").current = true
+	
+	print("created!")
 	emit_signal("player_created", player_instance, local)
 
 func _player_disconnected(id) -> void:
@@ -135,17 +141,47 @@ remote func register_player(info) -> void:
 	player_info[id] = info
 	# Call function to update lobby UI here
 
-func connect_server() -> void:
+func connect_server(port: int) -> void:
 	var peer = NetworkedMultiplayerENet.new()
 	print(peer.create_server(SERVER_PORT, MAX_PLAYERS))
 	get_tree().network_peer = peer
 	print("Connected server")
 	print(get_tree().is_network_server())
+	create_player_instance(get_tree().get_network_unique_id())
 
-func connect_client() -> void:
+func connect_client(ip: String, port: int) -> void:
 	var peer = NetworkedMultiplayerENet.new()
-	print(peer.create_client(SERVER_IP, SERVER_PORT))
+	print(peer.create_client(ip, port))
 	get_tree().network_peer = peer
 	print("Connected client")
 	print(get_tree().is_network_server())
 
+
+func goto_scene(path):
+	# This function will usually be called from a signal callback,
+	# or some other function from the running scene.
+	# Deleting the current scene at this point might be
+	# a bad idea, because it may be inside of a callback or function of it.
+	# The worst case will be a crash or unexpected behavior.
+
+	# The way around this is deferring the load to a later time, when
+	# it is ensured that no code from the current scene is running:
+
+	call_deferred("_deferred_goto_scene", path)
+
+func _deferred_goto_scene(path):
+	# Immediately free the current scene,
+	# there is no risk here.
+	current_scene.free()
+
+	# Load new scene.
+	var s = ResourceLoader.load(path)
+
+	# Instance the new scene.
+	current_scene = s.instance()
+
+	# Add it to the active scene, as child of root.
+	get_tree().get_root().add_child(current_scene)
+
+	# Optional, to make it compatible with the SceneTree.change_scene() API.
+	get_tree().set_current_scene(current_scene)
