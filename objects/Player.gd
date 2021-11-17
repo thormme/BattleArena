@@ -50,12 +50,12 @@ func _physics_process(delta: float):
 		state_machine.travel("Idle")
 
 func _get_cast_attempt_command():
-	var ability_indicies = []
+	var ability_values = []
 	for ability_index in AbilityIndex:
-		if Input.is_action_pressed(ability_input_name[ability_index as int]):
-			ability_indicies.append(ability_index)
+		if Input.is_action_pressed(ability_input_name[ability_index]):
+			ability_values.append(ability_index)
 	
-	return ability_indicies
+	return ability_values
 
 func _get_cast_position_command() -> Vector3:
 	return self._get_mouse_pos()

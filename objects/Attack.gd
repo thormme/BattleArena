@@ -1,4 +1,4 @@
-extends Character
+extends Mover
 class_name Attack
 
 export var destroy_on_contact = true

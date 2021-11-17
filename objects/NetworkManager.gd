@@ -10,9 +10,6 @@ var object_id = 0
 
 var current_scene = null
 
-#onready var client_button = get_tree().get_current_scene().get_node("Interface").get_node("ClientButton")
-#onready var server_button = get_tree().get_current_scene().get_node("Interface").get_node("ServerButton")
-
 signal player_created(player, local)
 
 func _ready() -> void:
@@ -30,7 +27,7 @@ func _ready() -> void:
 # Player info, associate ID to data
 var player_info = {}
 # Info we send to other players
-var my_info = { name = "Johnson Magenta", team = Character.Team.TEAM_1 }
+var my_info = { name = "Johnson Magenta", team = Mover.Team.TEAM_1 }
 
 func _player_connected(id):
 	# Called on both clients and server when a peer connects. Send my info to it.
@@ -46,7 +43,7 @@ remote func _create_instance(scene_path, init_params, new_name, parent_node_path
 func _create_node_instance(scene_path, init_params, new_name, parent_node_path: String, callback_instance_path: String = "", callback_name: String = "") -> Node:
 	var instance = load(scene_path).instance() # TODO: Cache with preload
 	instance.call("init", init_params)
-	if instance.is_class("Character"): # TODO: Is this really needed?
+	if instance.is_class("Mover"): # TODO: Is this really needed?
 		instance.peer_owner_id = HOST_ID
 	var parent_node = get_tree().get_root()
 	if parent_node_path != "":
@@ -105,7 +102,7 @@ func create_player_instance(id: int) -> void:
 		local = true
 	else:
 		player_instance = PlayerScene.instance()
-	player_instance.init([Character.Team.TEAM_1])
+	player_instance.init([Mover.Team.TEAM_1])
 	player_instance.peer_owner_id = id
 	player_instance.set_name(str(id))
 	get_tree().get_root().add_child(player_instance)

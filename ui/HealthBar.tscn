@@ -1,0 +1,83 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://ui/images/squareWhite.png" type="Texture" id=1]
+[ext_resource path="res://ui/images/health_overlay.png" type="Texture" id=2]
+[ext_resource path="res://ui/HealthBar.gd" type="Script" id=3]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+
+[sub_resource type="ViewportTexture" id=3]
+viewport_path = NodePath("ViewportContainer/Viewport")
+
+[node name="HealthBar" type="TextureProgress"]
+rect_min_size = Vector2( 80, 10 )
+value = 50.0
+texture_under = ExtResource( 1 )
+texture_progress = ExtResource( 1 )
+tint_under = Color( 0.34902, 0.34902, 0.34902, 1 )
+tint_progress = Color( 0.00392157, 0.439216, 0.839216, 1 )
+nine_patch_stretch = true
+stretch_margin_left = 5
+stretch_margin_top = 5
+stretch_margin_right = 5
+stretch_margin_bottom = 5
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_horizontal_guides_": [  ],
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+margin_right = 16.0
+margin_bottom = 10.0
+rect_min_size = Vector2( 0, 10 )
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_clip_content = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 16, 10 )
+transparent_bg = true
+handle_input_locally = false
+render_target_v_flip = true
+render_target_update_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="ViewportContainer/Viewport"]
+material = SubResource( 1 )
+margin_right = 16.0
+margin_bottom = 10.0
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer2" type="ViewportContainer" parent="."]
+margin_right = 80.0
+margin_bottom = 10.0
+rect_scale = Vector2( 1e-05, 1e-05 )
+rect_clip_content = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer2"]
+size = Vector2( 80, 10 )
+transparent_bg = true
+handle_input_locally = false
+render_target_v_flip = true
+render_target_update_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="ViewportContainer2/Viewport"]
+material = SubResource( 1 )
+margin_right = 80.0
+margin_bottom = 10.0
+texture = SubResource( 3 )
+expand = true
+stretch_mode = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
