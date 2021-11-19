@@ -1,7 +1,7 @@
 extends Ability
 class_name ShootAbility
 
-const AttackAbilityScene = preload("res://objects/Attack.tscn")
+const AttackAbilityScene = preload("res://objects/attacks/Fireball.tscn")
 
 func _update_active(delta, cast_pos) -> void:
 	._update_active(delta, cast_pos)

@@ -6,6 +6,8 @@ const CHARACTER_GROUP = "Character"
 signal damaged(new_health, amount)
 signal healed(new_health, amount)
 signal killed()
+signal got_focus()
+signal lost_focus()
 
 export var max_health: int = 100
 var health: int = max_health

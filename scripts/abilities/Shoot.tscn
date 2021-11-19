@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://objects/Ability.tscn" type="PackedScene" id=1]
+[ext_resource path="res://objects/CastDirectionPreview.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/abilities/Shoot.gd" type="Script" id=3]
+
+[node name="Ability" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+
+[node name="CastPreview" parent="." index="2" instance=ExtResource( 2 )]
+max_distance = 20
+
+[connection signal="activated" from="." to="CastPreview" method="_on_Ability_activated"]
+[connection signal="charging" from="." to="CastPreview" method="_on_Ability_charging"]
+[connection signal="inactivated" from="." to="CastPreview" method="_on_Ability_inactivated"]

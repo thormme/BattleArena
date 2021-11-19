@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://particles/FireTrail.tres" type="Material" id=1]
+[ext_resource path="res://particles/FireBase.tres" type="Material" id=2]
+[ext_resource path="res://particles/smoke_08.png" type="Texture" id=3]
+[ext_resource path="res://objects/Attack.tscn" type="PackedScene" id=4]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+params_blend_mode = 1
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 3 )
+
+[sub_resource type="QuadMesh" id=2]
+
+[node name="Attack" instance=ExtResource( 4 )]
+
+[node name="Particles" type="Particles" parent="Pivot" index="0"]
+material_override = SubResource( 1 )
+amount = 16
+process_material = ExtResource( 2 )
+draw_pass_1 = SubResource( 2 )
+
+[node name="Particles2" type="Particles" parent="Pivot" index="1"]
+material_override = SubResource( 1 )
+amount = 32
+process_material = ExtResource( 1 )
+draw_pass_1 = SubResource( 2 )

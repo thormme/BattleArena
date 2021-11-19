@@ -1,8 +1,20 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://objects/Player.tscn" type="PackedScene" id=1]
 
+[sub_resource type="CylinderMesh" id=1]
+
 [node name="LocalPlayer" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+collision_layer = 0
+collision_mask = 7
+axis_lock_motion_y = true
+move_lock_y = true
+
+[node name="MeshInstance" parent="Pivot" index="0"]
+layers = 1
+mesh = SubResource( 1 )
+material/0 = null
 
 [node name="Camera" type="Camera" parent="." index="9"]
-transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 14.96, 13.884 )
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 20.1503, 14.7568 )
