@@ -3,7 +3,7 @@ extends Spatial
 export var max_distance = 50
 export var min_distance = 20
 
-onready var player: Node = get_parent().get_parent()
+onready var player: Mover = get_parent().get_parent()
 onready var sprite_3d: Sprite3D = $Sprite3D
 onready var viewport_container: ViewportContainer = $ViewportContainer
 onready var viewport: Viewport = $ViewportContainer/Viewport
@@ -41,7 +41,8 @@ func _disable():
 	self.visible = false
 
 func _on_Ability_charging(previous_state):
-	self.visible = true
+	if (player._has_command_authority()):
+		self.visible = true
 
 func _on_Ability_activated(previous_state):
 	_disable()
