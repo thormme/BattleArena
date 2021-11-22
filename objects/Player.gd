@@ -1,6 +1,10 @@
 extends Character
 class_name Player
 
+func _ready():
+	if _get_network_id() == self.peer_owner_id:
+		$Camera.current = true
+	NetworkManager.emit_signal("player_created", self, _get_network_id() == self.peer_owner_id)
 
 func _get_mouse_pos() -> Vector3:
 	var mouse = get_viewport().get_mouse_position()
@@ -38,7 +42,7 @@ func _get_move_attempt_command() -> Vector3:
 	direction = direction.rotated(Vector3.UP, forward.angle_to(Vector3.FORWARD) + PI)
 	return direction
 
-func _physics_process(delta: float):
+func _physics_process(delta: float) -> void:
 	#._physics_process(delta) # Called automatically by the engine...
 	
 	# Rotate facing direction
@@ -49,7 +53,7 @@ func _physics_process(delta: float):
 		var state_machine = $Pivot.get_node("Model").get_node("AnimationTree")["parameters/StateMachine/playback"]
 		state_machine.travel("Idle")
 
-func _get_cast_attempt_command():
+func _get_cast_attempt_command() -> Array:
 	var ability_values = []
 	for ability_index in AbilityIndex:
 		if Input.is_action_pressed(ability_input_name[ability_index]):

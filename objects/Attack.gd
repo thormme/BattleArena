@@ -6,7 +6,7 @@ export var destroy_on_timeout = true
 export var has_collision = false
 
 func init(params: Array):
-	.init([params[2]])
+	.init([params[2], NetworkManager.HOST_ID])
 	self.callv("_init_Attack", params)
 	
 func _init_Attack(position, direction: Vector3, team: int) -> void:

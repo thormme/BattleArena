@@ -89,8 +89,8 @@ func _update_charging(delta, cast_pos) -> void:
 func _update_active(delta, cast_pos) -> void:
 	pass
 
-func _on_CooldownTimer_timeout():
+func _on_CooldownTimer_timeout() -> void:
 	emit_signal("finished_cooldown")
 
-func _on_CastTimer_timeout():
+func _on_CastTimer_timeout() -> void:
 	_set_active(AbilityState.ACTIVE)

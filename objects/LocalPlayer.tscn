@@ -16,5 +16,5 @@ layers = 1
 mesh = SubResource( 1 )
 material/0 = null
 
-[node name="Camera" type="Camera" parent="." index="9"]
-transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 20.1503, 14.7568 )
+[node name="CollisionShape" parent="." index="1"]
+visible = true

@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://objects/CastAreaPreview.tscn" type="PackedScene" id=1]
+[ext_resource path="res://objects/Ability.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/abilities/Explosion.gd" type="Script" id=3]
+
+[node name="Ability" instance=ExtResource( 2 )]
+script = ExtResource( 3 )
+
+[node name="CastAreaPreview" parent="." index="2" instance=ExtResource( 1 )]
+radius = 1.0
+
+[connection signal="activated" from="." to="CastAreaPreview" method="_on_Ability_activated"]
+[connection signal="charging" from="." to="CastAreaPreview" method="_on_Ability_charging"]
+[connection signal="inactivated" from="." to="CastAreaPreview" method="_on_Ability_inactivated"]

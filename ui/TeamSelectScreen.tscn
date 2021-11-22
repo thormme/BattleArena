@@ -1,0 +1,243 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://ui/fonts/kenvector_future.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://ui/images/metalPanel_blue.png" type="Texture" id=2]
+[ext_resource path="res://ui/images/blue_button_flat_up.png" type="Texture" id=3]
+[ext_resource path="res://ui/images/blue_button_flat_down.png" type="Texture" id=4]
+[ext_resource path="res://ui/ReadyButton.gd" type="Script" id=5]
+[ext_resource path="res://ui/TeamSelectScreen.gd" type="Script" id=6]
+[ext_resource path="res://ui/TeamSelectionPlayerList.gd" type="Script" id=7]
+
+[sub_resource type="Theme" id=1]
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 1 )
+
+[sub_resource type="Theme" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_right = 1024.0
+margin_bottom = 18.0
+theme = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Select Your Team"
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -100.0
+margin_bottom = 100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
+margin_left = 279.0
+margin_right = 745.0
+margin_bottom = 200.0
+
+[node name="TeamBoxTeam1" type="NinePatchRect" parent="CenterContainer/HBoxContainer"]
+margin_right = 150.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 150, 200 )
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+texture = ExtResource( 2 )
+patch_margin_left = 20
+patch_margin_top = 30
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/HBoxContainer/TeamBoxTeam1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 150, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/HBoxContainer/TeamBoxTeam1/VBoxContainer"]
+margin_right = 150.0
+margin_bottom = 30.0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/TeamBoxTeam1/VBoxContainer/CenterContainer"]
+margin_left = 51.0
+margin_right = 98.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+theme = SubResource( 3 )
+text = "Team 1"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/HBoxContainer/TeamBoxTeam1/VBoxContainer"]
+margin_top = 34.0
+margin_right = 150.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="PlayerList" type="ItemList" parent="CenterContainer/HBoxContainer/TeamBoxTeam1/VBoxContainer"]
+margin_top = 48.0
+margin_right = 150.0
+margin_bottom = 48.0
+custom_styles/bg = SubResource( 4 )
+auto_height = true
+script = ExtResource( 7 )
+
+[node name="MarginContainer2" type="MarginContainer" parent="CenterContainer/HBoxContainer"]
+margin_left = 154.0
+margin_right = 154.0
+margin_bottom = 200.0
+
+[node name="TeamBoxTeam2" type="NinePatchRect" parent="CenterContainer/HBoxContainer"]
+margin_left = 158.0
+margin_right = 308.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 150, 200 )
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+texture = ExtResource( 2 )
+patch_margin_left = 20
+patch_margin_top = 30
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/HBoxContainer/TeamBoxTeam2"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 150, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/HBoxContainer/TeamBoxTeam2/VBoxContainer"]
+margin_right = 150.0
+margin_bottom = 30.0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/TeamBoxTeam2/VBoxContainer/CenterContainer"]
+margin_left = 51.0
+margin_right = 98.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+theme = SubResource( 3 )
+text = "Team 2"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/HBoxContainer/TeamBoxTeam2/VBoxContainer"]
+margin_top = 34.0
+margin_right = 150.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="PlayerList" type="ItemList" parent="CenterContainer/HBoxContainer/TeamBoxTeam2/VBoxContainer"]
+margin_top = 48.0
+margin_right = 150.0
+margin_bottom = 48.0
+custom_styles/bg = SubResource( 4 )
+auto_height = true
+script = ExtResource( 7 )
+team = 4
+
+[node name="MarginContainer3" type="MarginContainer" parent="CenterContainer/HBoxContainer"]
+margin_left = 312.0
+margin_right = 312.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 0, 50 )
+
+[node name="TeamBoxUnassigned" type="NinePatchRect" parent="CenterContainer/HBoxContainer"]
+margin_left = 316.0
+margin_right = 466.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 150, 200 )
+mouse_filter = 1
+mouse_default_cursor_shape = 2
+texture = ExtResource( 2 )
+patch_margin_left = 20
+patch_margin_top = 30
+patch_margin_right = 20
+patch_margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/HBoxContainer/TeamBoxUnassigned"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 150, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/HBoxContainer/TeamBoxUnassigned/VBoxContainer"]
+margin_right = 150.0
+margin_bottom = 30.0
+
+[node name="Label" type="Label" parent="CenterContainer/HBoxContainer/TeamBoxUnassigned/VBoxContainer/CenterContainer"]
+margin_left = 38.0
+margin_right = 112.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+theme = SubResource( 3 )
+text = "Unassigned"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/HBoxContainer/TeamBoxUnassigned/VBoxContainer"]
+margin_top = 34.0
+margin_right = 150.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="PlayerList" type="ItemList" parent="CenterContainer/HBoxContainer/TeamBoxUnassigned/VBoxContainer"]
+margin_top = 48.0
+margin_right = 150.0
+margin_bottom = 48.0
+custom_styles/bg = SubResource( 4 )
+auto_height = true
+script = ExtResource( 7 )
+team = 0
+
+[node name="ReadyButton" type="CheckButton" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -202.0
+margin_top = -57.0
+custom_icons/off = ExtResource( 3 )
+custom_icons/on = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ReadyButton"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Ready"
+align = 1
+valign = 1
+script = ExtResource( 5 )
+
+[connection signal="player_changed_team" from="." to="CenterContainer/HBoxContainer/TeamBoxTeam1/VBoxContainer/PlayerList" method="_on_Control_player_changed_team"]
+[connection signal="player_changed_team" from="." to="CenterContainer/HBoxContainer/TeamBoxTeam2/VBoxContainer/PlayerList" method="_on_Control_player_changed_team"]
+[connection signal="player_changed_team" from="." to="CenterContainer/HBoxContainer/TeamBoxUnassigned/VBoxContainer/PlayerList" method="_on_Control_player_changed_team"]
+[connection signal="gui_input" from="CenterContainer/HBoxContainer/TeamBoxTeam1" to="." method="_on_TeamBoxTeam1_gui_input"]
+[connection signal="gui_input" from="CenterContainer/HBoxContainer/TeamBoxTeam2" to="." method="_on_TeamBoxTeam2_gui_input"]
+[connection signal="gui_input" from="CenterContainer/HBoxContainer/TeamBoxUnassigned" to="." method="_on_TeamBoxUnassigned_gui_input"]
+[connection signal="toggled" from="ReadyButton" to="." method="_on_ReadyButton_toggled"]
+[connection signal="toggled" from="ReadyButton" to="ReadyButton/Label" method="_on_CheckButton_toggled"]

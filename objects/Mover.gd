@@ -24,6 +24,7 @@ const AbilityIndex = [
 ]
 
 enum Team {
+	SPECTATOR = 0
 	TEAM_1 = 2,
 	TEAM_2 = 4
 }
@@ -56,13 +57,18 @@ var ability_input_name = [
 
 func init(params: Array):
 	_team = params[0]
+	peer_owner_id = params[1]
 	
 func _handle_team_change(team) -> void:
 	_team = team
 	if team == Team.TEAM_1:
 		add_to_group(TEAM_1_GROUP)
+		if is_in_group(TEAM_2_GROUP):
+			remove_from_group(TEAM_2_GROUP)
 	if team == Team.TEAM_2:
 		add_to_group(TEAM_2_GROUP)
+		if is_in_group(TEAM_1_GROUP):
+			remove_from_group(TEAM_1_GROUP)
 	collision_layer |= team
 
 func _ready() -> void:
@@ -234,7 +240,7 @@ func add_status(status: StatusEffect) -> void:
 	status_effects.append(status)
 	status_effects.sort_custom(StatusSorter, "sort_status_priority")
 	status.handle_added(self)
-	if _get_network_id() != 1:
+	if _get_network_id() != NetworkManager.HOST_ID:
 		status.connect("tree_exiting", self, "remove_status", [status])
 	
 func remove_status(status: StatusEffect) -> void:
@@ -248,7 +254,7 @@ func _get_network_id() -> int:
 		return -1
 
 class StatusSorter:
-	static func sort_status_priority(a: StatusEffect, b: StatusEffect):
+	static func sort_status_priority(a: StatusEffect, b: StatusEffect) -> bool:
 		if a._priority < b._priority:
 			return true
 		return false

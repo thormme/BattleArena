@@ -20,7 +20,7 @@ func apply_damage(damage: int) -> void:
 		_send_damage(damage)
 		rpc("_send_damage", damage)
 
-remote func _send_damage(damage: int):
+remote func _send_damage(damage: int) -> void:
 	health -= damage
 	emit_signal("damaged", health, damage)
 	if health <= 0:
@@ -34,7 +34,7 @@ func apply_heal(heal_amount: int) -> void:
 		_send_heal(heal_amount)
 		rpc("_send_heal", heal_amount)
 	
-remote func _send_heal(heal_amount: int):
+remote func _send_heal(heal_amount: int) -> void:
 	health += heal_amount
 	emit_signal("healed", health, heal_amount)
 
