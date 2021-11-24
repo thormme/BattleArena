@@ -2,11 +2,11 @@
 
 [ext_resource path="res://objects/Player.gd" type="Script" id=1]
 [ext_resource path="res://objects/Character.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scripts/abilities/Shoot.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/abilities/FireballAbility.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scripts/abilities/Explosion.tscn" type="PackedScene" id=4]
 [ext_resource path="res://objects/Ability.tscn" type="PackedScene" id=5]
 [ext_resource path="res://models/blue_guy.tscn" type="PackedScene" id=6]
-[ext_resource path="res://scripts/abilities/Explosion.gd" type="Script" id=7]
+[ext_resource path="res://scripts/abilities/Teleport.gd" type="Script" id=7]
 
 [sub_resource type="CylinderMesh" id=1]
 

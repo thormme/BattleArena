@@ -1,7 +1,7 @@
 extends Ability
-class_name ShootAbility
+class_name FireballAbility
 
-const AttackAbilityScene = preload("res://objects/attacks/Fireball.tscn")
+const FireballScene = preload("res://objects/attacks/Fireball.tscn")
 
 func _update_active(delta, cast_pos) -> void:
 	._update_active(delta, cast_pos)
@@ -11,6 +11,6 @@ func _update_active(delta, cast_pos) -> void:
 	var team = get_parent()._team
 	var position = get_parent().transform.origin
 	
-	NetworkManager.create_node_instance(AttackAbilityScene.resource_path, [position, dir, team])
+	NetworkManager.create_node_instance(FireballScene.resource_path, [position, dir, team])
 	
 	_set_active(AbilityState.INACTIVE)

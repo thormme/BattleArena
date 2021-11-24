@@ -2,6 +2,7 @@ extends Spatial
 
 export var max_distance = 50
 export var min_distance = 20
+export var visible_during_cast = false
 
 onready var player: Mover = get_parent().get_parent()
 onready var sprite_3d: Sprite3D = $Sprite3D
@@ -45,7 +46,8 @@ func _on_Ability_charging(previous_state):
 		self.visible = true
 
 func _on_Ability_activated(previous_state):
-	_disable()
+	if !visible_during_cast:
+		_disable()
 
 func _on_Ability_inactivated(previous_state):
 	_disable()

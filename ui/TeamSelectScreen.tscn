@@ -90,6 +90,7 @@ margin_bottom = 44.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="PlayerList" type="ItemList" parent="CenterContainer/HBoxContainer/TeamBoxTeam1/VBoxContainer"]
+margin_left = 5.0
 margin_top = 48.0
 margin_right = 150.0
 margin_bottom = 48.0
@@ -146,6 +147,7 @@ margin_bottom = 44.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="PlayerList" type="ItemList" parent="CenterContainer/HBoxContainer/TeamBoxTeam2/VBoxContainer"]
+margin_left = 5.0
 margin_top = 48.0
 margin_right = 150.0
 margin_bottom = 48.0
@@ -204,6 +206,7 @@ margin_bottom = 44.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="PlayerList" type="ItemList" parent="CenterContainer/HBoxContainer/TeamBoxUnassigned/VBoxContainer"]
+margin_left = 5.0
 margin_top = 48.0
 margin_right = 150.0
 margin_bottom = 48.0
@@ -233,9 +236,6 @@ align = 1
 valign = 1
 script = ExtResource( 5 )
 
-[connection signal="player_changed_team" from="." to="CenterContainer/HBoxContainer/TeamBoxTeam1/VBoxContainer/PlayerList" method="_on_Control_player_changed_team"]
-[connection signal="player_changed_team" from="." to="CenterContainer/HBoxContainer/TeamBoxTeam2/VBoxContainer/PlayerList" method="_on_Control_player_changed_team"]
-[connection signal="player_changed_team" from="." to="CenterContainer/HBoxContainer/TeamBoxUnassigned/VBoxContainer/PlayerList" method="_on_Control_player_changed_team"]
 [connection signal="gui_input" from="CenterContainer/HBoxContainer/TeamBoxTeam1" to="." method="_on_TeamBoxTeam1_gui_input"]
 [connection signal="gui_input" from="CenterContainer/HBoxContainer/TeamBoxTeam2" to="." method="_on_TeamBoxTeam2_gui_input"]
 [connection signal="gui_input" from="CenterContainer/HBoxContainer/TeamBoxUnassigned" to="." method="_on_TeamBoxUnassigned_gui_input"]

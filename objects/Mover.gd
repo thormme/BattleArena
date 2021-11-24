@@ -201,7 +201,7 @@ remote func send_update(dir, trans, requested_abilities, cast_pos) -> void:
 	var from_host = get_tree().get_rpc_sender_id() == 1
 	var owned = _get_network_id() == peer_owner_id
 	var from_owner = get_tree().get_rpc_sender_id() == peer_owner_id
-	if (from_host && !owned) || from_owner:
+	if (from_host && !owned) || from_owner: # TODO: Don't allow unless from or to host
 		_direction = dir
 		if should_correct_position(trans) && get_tree().get_network_unique_id() != 1:
 			transform = trans
@@ -246,6 +246,12 @@ func add_status(status: StatusEffect) -> void:
 func remove_status(status: StatusEffect) -> void:
 	status_effects.remove(status_effects.find(status))
 	status.handle_removed()
+
+func remove_status_with_filter(object: Object, filter_method: String) -> void:
+	for status_index in range(status_effects.size() - 1, -1, -1):
+		var status = status_effects[status_index]
+		if object.call(filter_method, status):
+			status_effects.remove(status_index)
 	
 func _get_network_id() -> int:
 	if get_tree().has_network_peer():
@@ -255,6 +261,6 @@ func _get_network_id() -> int:
 
 class StatusSorter:
 	static func sort_status_priority(a: StatusEffect, b: StatusEffect) -> bool:
-		if a._priority < b._priority:
+		if a.priority < b.priority:
 			return true
 		return false
