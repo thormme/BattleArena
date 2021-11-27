@@ -4,6 +4,7 @@ class_name Attack
 export var destroy_on_contact = true
 export var destroy_on_timeout = true
 export var has_collision = false
+export var detect_immaterial = false
 export var max_distance = 20
 export var damage = 15
 
@@ -17,6 +18,8 @@ func _init_Attack(position, direction: Vector3, team: int) -> void:
 	_initial_position = position
 	transform = transform.translated(position)
 	collision_mask |= team ^ (Team.TEAM_1 | Team.TEAM_2)
+	if detect_immaterial:
+		collision_mask |= collision_mask << 16 # Duplicate lower 16 layers for immaterial sensing
 	_direction = direction
 	
 

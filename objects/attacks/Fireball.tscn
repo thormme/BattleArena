@@ -21,7 +21,6 @@ albedo_texture = ExtResource( 3 )
 
 [node name="Attack" instance=ExtResource( 4 )]
 script = ExtResource( 5 )
-speed = 14
 
 [node name="Particles" type="Particles" parent="Pivot" index="0"]
 material_override = SubResource( 1 )

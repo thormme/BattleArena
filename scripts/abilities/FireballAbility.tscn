@@ -15,6 +15,7 @@ wait_time = 0.4
 
 [node name="CastPreview" parent="." index="2" instance=ExtResource( 2 )]
 max_distance = 20
+ability_radius = 1.0
 
 [connection signal="activated" from="." to="CastPreview" method="_on_Ability_activated"]
 [connection signal="charging" from="." to="CastPreview" method="_on_Ability_charging"]

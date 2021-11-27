@@ -30,3 +30,6 @@ func _update_health(new_health):
 func _exit_tree() -> void:
 	interface.remove_child(_health_bar)
 	_health_bar.call_deferred("free")
+
+func _on_Character_killed():
+	pass

@@ -242,16 +242,32 @@ func add_status(status: StatusEffect) -> void:
 	status.handle_added(self)
 	if _get_network_id() != NetworkManager.HOST_ID:
 		status.connect("tree_exiting", self, "remove_status", [status])
-	
+		
+		
+func apply_status(scene_path, init_params, callback_instance_path: String = "", callback_name: String = "", callback_params: Array = []):
+	NetworkManager.create_node_instance(scene_path, init_params, get_node("StatusEffects").get_path(), get_path(), "_handle_status_created",  [callback_instance_path, callback_name, callback_params])
+
+func _handle_status_created(status_node_path: String, callback_instance_path: String = "", callback_name: String = "", callback_params: Array = []):
+	var status: StatusEffect = get_node(status_node_path)
+	if callback_instance_path != "":
+		var callback_node = get_node(callback_instance_path)
+		callback_node.callv(callback_name, [status_node_path] + callback_params)
+	add_status(status)
+
 func remove_status(status: StatusEffect) -> void:
-	status_effects.remove(status_effects.find(status))
-	status.handle_removed()
+	var status_index = status_effects.find(status)
+	if status_index >= 0:
+		status_effects.remove(status_index)
+		status.handle_removed()
+	else:
+		print('what')
 
 func remove_status_with_filter(object: Object, filter_method: String) -> void:
 	for status_index in range(status_effects.size() - 1, -1, -1):
 		var status = status_effects[status_index]
 		if object.call(filter_method, status):
 			status_effects.remove(status_index)
+			status.handle_removed()
 	
 func _get_network_id() -> int:
 	if get_tree().has_network_peer():

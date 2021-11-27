@@ -5,11 +5,6 @@ export var damage_increment: int = 10
 export var damage_on_hit: bool = true
 
 
-func handle_move(movement: Vector3) -> Vector3:
-	.handle_move(movement)
-	return Vector3(movement.x * 2, 0, movement.z * 2)
-
-
 func handle_added(target) -> void:
 	.handle_added(target)
 	if damage_on_hit:

@@ -51,16 +51,17 @@ func _handle_inactivate(_active) -> void:
 	if _active == AbilityState.CHARGING:
 		cooldown_timer.start_cancelled()
 		emit_signal("started_cooldown", cooldown_timer)
-	if _active == AbilityState.ACTIVE:
-		cooldown_timer.start_default()
-		emit_signal("started_cooldown", cooldown_timer)
 	emit_signal("inactivated", _active)
 
 func _handle_charge(_active) -> void:
 	cast_timer.start()
 	emit_signal("charging", _active)
 
+# Handle a change in ability status
+# Note: Do not change activation status within this handler!
 func _handle_activate(_active) -> void:
+	cooldown_timer.start_default()
+	emit_signal("started_cooldown", cooldown_timer)
 	emit_signal("activated", _active)
 
 func _set_active(_active) -> void:

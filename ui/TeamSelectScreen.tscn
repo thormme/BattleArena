@@ -90,7 +90,6 @@ margin_bottom = 44.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="PlayerList" type="ItemList" parent="CenterContainer/HBoxContainer/TeamBoxTeam1/VBoxContainer"]
-margin_left = 5.0
 margin_top = 48.0
 margin_right = 150.0
 margin_bottom = 48.0
@@ -147,7 +146,6 @@ margin_bottom = 44.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="PlayerList" type="ItemList" parent="CenterContainer/HBoxContainer/TeamBoxTeam2/VBoxContainer"]
-margin_left = 5.0
 margin_top = 48.0
 margin_right = 150.0
 margin_bottom = 48.0
@@ -206,7 +204,6 @@ margin_bottom = 44.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="PlayerList" type="ItemList" parent="CenterContainer/HBoxContainer/TeamBoxUnassigned/VBoxContainer"]
-margin_left = 5.0
 margin_top = 48.0
 margin_right = 150.0
 margin_bottom = 48.0
