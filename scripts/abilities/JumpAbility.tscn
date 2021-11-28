@@ -5,3 +5,11 @@
 
 [node name="Ability" instance=ExtResource( 2 )]
 script = ExtResource( 1 )
+charge_priority = 80
+active_priority = 95
+
+[node name="CooldownTimer" parent="." index="0"]
+default_timeout = 8.0
+
+[node name="CastTimer" parent="." index="1"]
+wait_time = 0.1

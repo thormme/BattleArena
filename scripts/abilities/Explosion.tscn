@@ -6,6 +6,7 @@
 
 [node name="Ability" instance=ExtResource( 2 )]
 script = ExtResource( 3 )
+min_cast_distance = 0
 
 [node name="CastAreaPreview" parent="." index="2" instance=ExtResource( 1 )]
 radius = 1.0

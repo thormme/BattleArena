@@ -46,5 +46,5 @@ func handle_update(delta: float) -> void:
 
 func _on_add_status_filter(status: StatusEffect) -> bool:
 	if remove_duplicates:
-		return status != self && status.is_class(self.get_class())
+		return status != self && status.get_script().resource_path == self.get_script().resource_path
 	return false

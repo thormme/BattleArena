@@ -21,9 +21,19 @@ signal finished_cooldown()
 onready var cooldown_timer = $CooldownTimer
 onready var cast_timer = $CastTimer
 var active = AbilityState.INACTIVE
+var _statuses: Dictionary = {}
 
+# Priority when charging the ability
+# Higher priority abilities are able to cancel lower prority abilities
 export var charge_priority = 50
+# Priority while the ability to active
+# Higher priority abilities are able to cancel lower prority abilities
 export var active_priority = 50
+
+# Maximum cast distance
+export var max_cast_distance = 50
+# Minimum cast distance
+export var min_cast_distance = 20
 
 
 func is_ready() -> bool:
@@ -73,13 +83,27 @@ func _set_active(_active) -> void:
 		_handle_activate(active)
 	active = _active
 
+# Restrain cast position to min and max range
+func _restrain_cast_position(cast_pos: Vector3) -> Vector3:
+	var player_position: Vector3 = get_parent().transform.origin
+	player_position.y = cast_pos.y
+	var direction = cast_pos - player_position
+	var length = direction.length()
+	if length < min_cast_distance:
+		length = min_cast_distance
+	if length > max_cast_distance:
+		length = max_cast_distance
+	return direction.normalized() * length + player_position
+
 func update(delta, cast_pos) -> void:
+	var fixed_cast_pos = _restrain_cast_position(cast_pos)
+
 	if active == AbilityState.INACTIVE:
-		_update_inactive(delta, cast_pos)
+		_update_inactive(delta, fixed_cast_pos)
 	if active == AbilityState.CHARGING:
-		_update_charging(delta, cast_pos)
+		_update_charging(delta, fixed_cast_pos)
 	if active == AbilityState.ACTIVE:
-		_update_active(delta, cast_pos)
+		_update_active(delta, fixed_cast_pos)
 	
 func _update_inactive(delta, cast_pos) -> void:
 	pass
@@ -95,3 +119,18 @@ func _on_CooldownTimer_timeout() -> void:
 
 func _on_CastTimer_timeout() -> void:
 	_set_active(AbilityState.ACTIVE)
+	
+func apply_status(status_type: Resource, key: String, init_params: Array = [], callback_name: String = "", callback_params: Array = []):
+	#var parent: Mover = get_parent()
+	get_parent().apply_status(status_type.resource_path, init_params, self.get_path(), "_handle_status_created", [key] + [callback_name, callback_params])
+
+
+func _handle_status_created(path: String, key: String, callback_name: String = "", callback_params: Array = []) -> void:
+	var instance = get_node(path)
+	_statuses[key] = instance
+	instance.connect("status_expired", self, "_handle_status_expired", [key])
+	if callback_name != "":
+		self.callv(callback_name, [path, key] + callback_params)
+
+func _handle_status_expired(key: String) -> void:
+	_statuses.erase(key)

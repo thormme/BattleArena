@@ -6,6 +6,13 @@ func _ready():
 		$Camera.current = true
 	NetworkManager.emit_signal("player_created", self, _get_network_id() == self.peer_owner_id)
 
+func init(params: Array):
+	.init([params[0], params[1]])
+	self._init_Player(params[2])
+	
+func _init_Player(position: Vector3) -> void:
+	transform = transform.translated(position)
+
 func _get_mouse_pos() -> Vector3:
 	var mouse = get_viewport().get_mouse_position()
 
