@@ -20,7 +20,7 @@ func _on_Character_damaged(new_health, amount, recovery_health):
 	_update_health(new_health)
 
 
-func _on_Character_healed(new_health, amount):
+func _on_Character_healed(new_health, amount, change):
 	_update_health(new_health)
 
 func _update_health(new_health):

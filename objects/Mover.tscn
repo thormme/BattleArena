@@ -5,6 +5,7 @@
 [sub_resource type="CylinderMesh" id=1]
 
 [sub_resource type="CylinderShape" id=2]
+radius = 0.75
 
 [node name="Mover" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
