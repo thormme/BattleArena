@@ -16,7 +16,7 @@ func _process(delta):
 	_health_bar.rect_position = get_viewport().get_camera().unproject_position(global_transform.origin) - _health_bar.rect_size / 2
 
 
-func _on_Character_damaged(new_health, amount):
+func _on_Character_damaged(new_health, amount, recovery_health):
 	_update_health(new_health)
 
 
@@ -33,3 +33,11 @@ func _exit_tree() -> void:
 
 func _on_Character_killed():
 	pass
+
+
+func _on_Character_healed_recovery(new_health, amount, change):
+	pass # Replace with function body.
+
+
+func _on_Character_health_set(new_health, recovery_health):
+	_update_health(new_health)

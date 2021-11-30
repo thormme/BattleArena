@@ -12,4 +12,6 @@ transform = Transform( 5.40217, 0, 0, 0, 5.40217, 0, 0, 0, 1, 0, 3.71294, 0 )
 
 [connection signal="damaged" from="." to="HealthBarView" method="_on_Character_damaged"]
 [connection signal="healed" from="." to="HealthBarView" method="_on_Character_healed"]
+[connection signal="healed_recovery" from="." to="HealthBarView" method="_on_Character_healed_recovery"]
+[connection signal="health_set" from="." to="HealthBarView" method="_on_Character_health_set"]
 [connection signal="killed" from="." to="HealthBarView" method="_on_Character_killed"]
