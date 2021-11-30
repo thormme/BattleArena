@@ -117,6 +117,11 @@ _global_script_classes=[ {
 "base": "Spatial",
 "class": "PlayerSpawner",
 "language": "GDScript",
+"path": "res://objects/Spawner.gd"
+}, {
+"base": "Spatial",
+"class": "Spawner",
+"language": "GDScript",
 "path": "res://objects/PlayerSpawner.gd"
 }, {
 "base": "Node",
@@ -152,6 +157,7 @@ _global_script_class_icons={
 "Player": "",
 "PlayerInfo": "",
 "PlayerSpawner": "",
+"Spawner": "",
 "StatusEffect": "",
 "TeleportAbility": ""
 }

@@ -1,5 +1,5 @@
 extends Spatial
-class_name PlayerSpawner
+class_name Spawner
 
 
 export (Mover.Team) var team: int = Mover.Team.TEAM_1

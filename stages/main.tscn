@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://objects/props/WallFull.tscn" type="PackedScene" id=1]
 [ext_resource path="res://objects/props/WallOneSide.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://addons/zylann.hterrain/hterrain.gd" type="Script" id=8]
 [ext_resource path="res://terrain/data.hterrain" type="Resource" id=9]
 [ext_resource path="res://objects/HealthOrb.tscn" type="PackedScene" id=10]
+[ext_resource path="res://objects/Spawner.tscn" type="PackedScene" id=11]
 [ext_resource path="res://addons/zylann.hterrain/hterrain_texture_set.gd" type="Script" id=13]
 
 [sub_resource type="BoxShape" id=1]
@@ -110,3 +111,15 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.579, 1, 18.905 )
 
 [node name="HealthOrb4" parent="." instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.579, 1, 14.4971 )
+
+[node name="Spawner" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.8545, 0, 5.4166 )
+object_path = "res://objects/HealthOrb.tscn"
+init_parmeters = [ null ]
+position_index = 0
+
+[node name="Spawner2" parent="." instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.9753, 0, 5.4166 )
+object_path = "res://objects/HealthOrb.tscn"
+init_parmeters = [ null ]
+position_index = 0

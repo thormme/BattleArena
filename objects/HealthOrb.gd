@@ -7,7 +7,7 @@ var _initial_position: Vector3
 
 func init(params: Array):
 	.init([Team.WORLD, NetworkManager.HOST_ID])
-	self.callv("_init_HealthOrb", params[0])
+	self.call("_init_HealthOrb", params[0])
 	
 func _init_HealthOrb(position: Vector3) -> void:
 	_initial_position = position
