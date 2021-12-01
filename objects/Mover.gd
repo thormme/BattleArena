@@ -44,6 +44,10 @@ var peer_owner_id: int = 1
 var _cast_pos = Vector3.ZERO
 var _cast_attempt: Array = []
 
+# TODO: Move energy and casting to Character
+export var max_energy: int = 100
+var energy: int = 100
+
 var _last_cast_ability = AbilityIndex[0]
 
 var ability_input_name = [
@@ -227,7 +231,7 @@ func _attempt_cast(ability_index, last_cast_ability) -> bool:
 		current_priority = last_ability.get_priority()
 	
 	var ability: Ability = _get_ability(ability_index)
-	if ability && ability.attempt_cast(current_priority):
+	if ability && ability.attempt_cast(current_priority, energy):
 		was_cast = true
 		if last_cast_ability != ability_index:
 			last_ability.cancel_cast()

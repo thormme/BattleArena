@@ -10,6 +10,8 @@
 viewport_path = NodePath("ViewportContainer/Viewport")
 
 [node name="HealthBar" type="TextureProgress"]
+margin_right = 80.0
+margin_bottom = 10.0
 rect_min_size = Vector2( 80, 10 )
 value = 50.0
 texture_under = ExtResource( 1 )

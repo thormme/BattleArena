@@ -10,6 +10,8 @@ var object_id = 0
 
 var current_scene = null
 
+var _resource_cache: Dictionary = {}
+
 signal player_created(player, local)
 signal player_connected(player_id)
 
@@ -52,7 +54,15 @@ remote func _create_instance(scene_path, init_params, new_name, parent_node_path
 	_create_node_instance(scene_path, init_params, new_name, parent_node_path, callback_instance_path, callback_name, callback_params)
 
 func _create_node_instance(scene_path, init_params, new_name, parent_node_path: String = "", callback_instance_path: String = "", callback_name: String = "", callback_params: Array = []) -> Node:
-	var instance = load(scene_path).instance() # TODO: Cache with preload
+	var scene
+	if _resource_cache.has(scene_path):
+		scene = _resource_cache[scene_path]
+	else:
+		scene = load(scene_path)
+		# Cache loaded scenes
+		# TODO: Consider unloading them eventually
+		_resource_cache[scene_path] = scene
+	var instance = scene.instance()
 	instance.call("init", init_params)
 	var parent_node = get_tree().get_root()
 	if parent_node_path != "":

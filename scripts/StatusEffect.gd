@@ -35,6 +35,15 @@ func handle_damage(damage: int) -> int:
 func handle_heal(amount: int) -> int:
 	return amount
 
+func handle_heal_recovery(amount: int) -> int:
+	return amount
+
+func handle_energy_spent(amount: int) -> int:
+	return amount
+
+func handle_energy_gain(amount: int) -> int:
+	return amount
+
 func handle_move(movement: Vector3) -> Vector3:
 	return movement
 

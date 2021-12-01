@@ -17,6 +17,7 @@ func _process(delta):
 
 
 func _on_Character_damaged(new_health, amount, recovery_health):
+	_update_recovery(recovery_health)
 	_update_health(new_health)
 
 
@@ -25,6 +26,12 @@ func _on_Character_healed(new_health, amount, change):
 
 func _update_health(new_health):
 	_health_bar.value = new_health
+
+func _update_recovery(new_recovery_health):
+	_health_bar.set_recovery(new_recovery_health)
+
+func _update_max_health(new_recovery_health):
+	_health_bar.set_true_max(new_recovery_health)
 
 
 func _exit_tree() -> void:
@@ -36,8 +43,10 @@ func _on_Character_killed():
 
 
 func _on_Character_healed_recovery(new_health, amount, change):
-	pass # Replace with function body.
+	_update_recovery(new_health)
 
 
-func _on_Character_health_set(new_health, recovery_health):
+func _on_Character_health_set(new_health, recovery_health, max_health):
+	_update_max_health(max_health)
+	_update_recovery(recovery_health)
 	_update_health(new_health)

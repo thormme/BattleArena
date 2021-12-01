@@ -35,6 +35,9 @@ export var max_cast_distance = 50
 # Minimum cast distance
 export var min_cast_distance = 20
 
+# Cast energy cost
+export var energy_cost: int = 0
+
 
 func is_ready() -> bool:
 	return cooldown_timer.is_stopped() && active == AbilityState.INACTIVE
@@ -47,8 +50,8 @@ func get_priority() -> int:
 		
 	return 0
 	
-func attempt_cast(current_priority) -> bool:
-	if !is_ready() || current_priority >= charge_priority:
+func attempt_cast(current_priority, remaining_energy: int) -> bool:
+	if !is_ready() || current_priority >= charge_priority || remaining_energy < energy_cost:
 		return false
 	_set_active(AbilityState.CHARGING)
 	return true

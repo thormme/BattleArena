@@ -114,12 +114,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.579, 1, 14.4971 )
 
 [node name="Spawner" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.8545, 0, 5.4166 )
-object_path = "res://objects/HealthOrb.tscn"
+object_path = ExtResource( 10 )
 init_parmeters = [ null ]
 position_index = 0
 
 [node name="Spawner2" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19.9753, 0, 5.4166 )
-object_path = "res://objects/HealthOrb.tscn"
+object_path = ExtResource( 10 )
 init_parmeters = [ null ]
 position_index = 0
