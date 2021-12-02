@@ -10,7 +10,7 @@ flags_unshaded = true
 flags_do_not_receive_shadows = true
 flags_disable_ambient_light = true
 params_billboard_mode = 1
-albedo_color = Color( 0.00784314, 0.819608, 0, 1 )
+albedo_color = Color( 0.27451, 1, 0.403922, 1 )
 albedo_texture = ExtResource( 2 )
 
 [node name="HealthOrb" instance=ExtResource( 1 )]

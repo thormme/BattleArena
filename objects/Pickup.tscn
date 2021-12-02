@@ -13,7 +13,7 @@ flags_do_not_receive_shadows = true
 flags_disable_ambient_light = true
 vertex_color_use_as_albedo = true
 params_billboard_mode = 1
-albedo_color = Color( 0.831373, 0.717647, 0, 1 )
+albedo_color = Color( 1, 0.921569, 0.27451, 1 )
 albedo_texture = ExtResource( 2 )
 
 [sub_resource type="CylinderShape" id=2]
