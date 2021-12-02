@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ui/GraduatedProgressBar.tscn" type="PackedScene" id=1]
+
+[sub_resource type="ViewportTexture" id=1]
+viewport_path = NodePath("ViewportContainer/Viewport")
+
+[node name="EnergyBar" instance=ExtResource( 1 )]
+margin_bottom = 6.0
+rect_min_size = Vector2( 80, 6 )
+tint_progress = Color( 0.831373, 0.717647, 0, 1 )
+stretch_margin_top = 3
+stretch_margin_bottom = 3
+SEGMENT_SIZE = 25
+
+[node name="ViewportContainer" parent="." index="0"]
+margin_bottom = 7.0
+rect_min_size = Vector2( 0, 6 )
+
+[node name="Viewport" parent="ViewportContainer" index="0"]
+size = Vector2( 16, 7 )
+
+[node name="TextureRect" parent="ViewportContainer/Viewport" index="0"]
+margin_bottom = 7.0
+
+[node name="Viewport" parent="ViewportContainer2" index="0"]
+size = Vector2( 80, 7 )
+
+[node name="TextureRect" parent="ViewportContainer2/Viewport" index="0"]
+margin_bottom = 7.0
+texture = SubResource( 1 )

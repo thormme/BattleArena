@@ -46,7 +46,7 @@ var _cast_attempt: Array = []
 
 # TODO: Move energy and casting to Character
 export var max_energy: int = 100
-var energy: int = 100
+var energy: int = 50
 
 var _last_cast_ability = AbilityIndex[0]
 
