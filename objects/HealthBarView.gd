@@ -42,7 +42,7 @@ func _exit_tree() -> void:
 	interface.remove_child(_hover_ui)
 	_hover_ui.call_deferred("free")
 
-func _on_Character_killed():
+func _on_Character_killed(caster):
 	pass
 
 
