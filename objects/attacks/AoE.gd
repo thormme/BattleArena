@@ -4,7 +4,7 @@ class_name AoE
 var _overlapping_bodies: Dictionary = {}
 
 func init(params: Array):
-	.init([params[0], Vector3.ZERO, params[1]])
+	.init([params[0], Vector3.ZERO, params[1], params[2]])
 
 func _get_overlapping_bodies() -> Dictionary:
 	var invalid_objects = []
@@ -22,7 +22,7 @@ func _on_Timer_timeout() -> void:
 	._on_Timer_timeout()
 	for body in _get_overlapping_bodies():
 		if body.is_in_group(Character.CHARACTER_GROUP):
-			body.apply_damage(15)
+			body.apply_damage(damage, _caster)
 
 func _handle_character_hit(body) -> void:
 	# prevent handling immediately

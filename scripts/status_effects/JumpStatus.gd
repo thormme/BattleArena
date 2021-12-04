@@ -13,9 +13,9 @@ func set_landing_pos(landing_pos: Vector3):
 		_landing_pos = landing_pos
 		_landing_set = true
 
-func init(params: Array): # duration: float
-	.init([])
-	duration = params[0]
+func init(params: Array): # caster: Mover, duration: float
+	.init([params[0]])
+	duration = params[1]
 	_starting_duration = duration
 	pass
 

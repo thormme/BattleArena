@@ -9,7 +9,7 @@ enum AbilityState {
 
 signal add_status(status)
 signal remove_status(status)
-signal apply_damage(damage)
+signal apply_damage(damage, caster)
 signal apply_heal(heal_amount)
 
 signal inactivated(previous_state)
@@ -20,6 +20,7 @@ signal finished_cooldown()
 
 onready var cooldown_timer = $CooldownTimer
 onready var cast_timer = $CastTimer
+onready var _owner = get_parent()
 var active = AbilityState.INACTIVE
 var _statuses: Dictionary = {}
 

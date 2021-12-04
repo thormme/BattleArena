@@ -9,9 +9,9 @@ export var has_world_collision: bool = false
 var _original_layers: int = 0
 var _original_mask: int = 0
 
-func init(params: Array): # duration: float
-	.init([])
-	duration = params[0]
+func init(params: Array): # caster: Mover, duration: float
+	.init([params[0]])
+	duration = params[1]
 	pass
 
 func handle_added(target: Mover) -> void:

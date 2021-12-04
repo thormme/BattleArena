@@ -8,9 +8,9 @@ const jump_status = preload("res://scripts/status_effects/JumpStatus.tscn")
 
 func _handle_activate(_active) -> void:
 	._handle_activate(_active)
-	apply_status(jump_status, "jump", [.5], "_handle_jump_created")
-	apply_status(immobile_status, "immobile", [3])
-	apply_status(immaterial_status, "immaterial", [3])
+	apply_status(jump_status, "jump", [_owner, .5], "_handle_jump_created")
+	apply_status(immobile_status, "immobile", [_owner, 3])
+	apply_status(immaterial_status, "immaterial", [_owner, 3])
 
 func _update_active(delta, cast_pos) -> void:
 	._update_active(delta, cast_pos)

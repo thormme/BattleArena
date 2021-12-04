@@ -3,7 +3,7 @@ class_name Character
 
 const CHARACTER_GROUP = "Character"
 
-signal damaged(new_health, amount, recovery_health)
+signal damaged(new_health, amount, recovery_health, caster)
 signal healed(new_health, amount, change)
 signal healed_recovery(new_health, amount, change)
 signal health_set(new_health, recovery_health, max_health)
@@ -28,19 +28,30 @@ func _ready():
 	emit_signal("health_set", health, recovery_health, max_health)
 	emit_signal("energy_set", energy, max_energy)
 
-func apply_damage(damage: int) -> void:
+# Damage the character by damage hitpoints
+# Modified by any applies status effects
+# caster: The Mover that cast the damage, can be null
+func apply_damage(damage: int, caster: Mover) -> void:
 	var statuses = status_effects.duplicate()
 	for status in statuses:
-		damage = status.handle_damage(damage)
+		damage = status.handle_damage(damage, caster)
+	
 	if _get_network_id() == NetworkManager.HOST_ID:
-		_send_damage(damage)
-		rpc("_send_damage", damage)
+		var caster_path = ""
+		if caster != null:
+			caster_path = caster.get_path()
+		
+		_send_damage(damage, caster_path)
+		rpc("_send_damage", damage, caster_path)
 
-remote func _send_damage(damage: int) -> void:
+remote func _send_damage(damage: int, caster_path: String) -> void:
+	var caster: Mover = null
+	if caster_path != "":
+		caster = get_node(caster_path)
 	health -= damage
 	if health < recovery_health - recovery_health_buffer:
 		recovery_health = health + recovery_health_buffer
-	emit_signal("damaged", health, damage, recovery_health)
+	emit_signal("damaged", health, damage, recovery_health, caster)
 	if health <= 0:
 		self._send_kill()
 

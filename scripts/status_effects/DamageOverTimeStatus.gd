@@ -8,7 +8,7 @@ export var damage_on_hit: bool = true
 func handle_added(target) -> void:
 	.handle_added(target)
 	if damage_on_hit:
-		_target.apply_damage(damage_increment)
+		_target.apply_damage(damage_increment, _caster)
 
 func _on_Timer_timeout():
-	_target.apply_damage(damage_increment)
+	_target.apply_damage(damage_increment, _caster)

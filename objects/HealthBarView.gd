@@ -20,7 +20,7 @@ func _process(delta):
 	_hover_ui.rect_position = get_viewport().get_camera().unproject_position(global_transform.origin) - _hover_ui.rect_size / 2
 
 
-func _on_Character_damaged(new_health, amount, recovery_health):
+func _on_Character_damaged(new_health, amount, recovery_health, caster):
 	_update_recovery(recovery_health)
 	_update_health(new_health)
 
@@ -39,8 +39,8 @@ func _update_max_health(new_recovery_health):
 
 
 func _exit_tree() -> void:
-	interface.remove_child(_health_bar)
-	_health_bar.call_deferred("free")
+	interface.remove_child(_hover_ui)
+	_hover_ui.call_deferred("free")
 
 func _on_Character_killed():
 	pass

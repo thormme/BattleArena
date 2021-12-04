@@ -6,11 +6,11 @@ const FireballScene = preload("res://objects/attacks/Fireball.tscn")
 func _update_active(delta, cast_pos) -> void:
 	._update_active(delta, cast_pos)
 	
-	var dir = cast_pos - get_parent().transform.origin
+	var dir = cast_pos - _owner.transform.origin
 	dir.y = 0
-	var team = get_parent()._team
-	var position = get_parent().transform.origin
+	var team = _owner._team
+	var position = _owner.transform.origin
 	
-	NetworkManager.create_node_instance(FireballScene.resource_path, [position, dir, team])
+	NetworkManager.create_node_instance(FireballScene.resource_path, [position, dir, team, _owner])
 	
 	_set_active(AbilityState.INACTIVE)

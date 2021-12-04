@@ -12,13 +12,14 @@ signal status_added()
 signal status_expired()
 
 var _target
+var _caster = null
 export var duration: float = 3
 export var priority: int = 50
 export (StatusType) var type = StatusType.ABILITY
 export var remove_duplicates: bool = true
 
 func init(params: Array): # duration: float, priority: int, type
-	pass
+	_caster = params[0]
 	
 func handle_added(target) -> void:
 	_target = target
@@ -29,7 +30,7 @@ func handle_removed() -> void:
 	emit_signal("status_expired")
 	NetworkManager.remove_node_instance(self.get_path())
 
-func handle_damage(damage: int) -> int:
+func handle_damage(damage: int, caster: Node) -> int:
 	return damage
 
 func handle_heal(amount: int) -> int:
