@@ -142,8 +142,9 @@ func _physics_process(delta) -> void:
 	velocity.z = _direction.z * speed
 	
 	var statuses = status_effects.duplicate()
+	var initial_velocity = velocity
 	for status in statuses:
-		velocity = status.handle_move(velocity)
+		velocity = status.handle_move(initial_velocity, velocity)
 	
 	
 	if self.has_method("move_and_slide"):

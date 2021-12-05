@@ -32,9 +32,16 @@ func _ready():
 # Modified by any applies status effects
 # caster: The Mover that cast the damage, can be null
 func apply_damage(damage: int, caster: Mover) -> void:
+	if caster != null:
+		var statuses = caster.status_effects.duplicate()
+		var initial_value = damage
+		for status in statuses:
+			damage = status.handle_damage_given(initial_value, damage, self)
+	
 	var statuses = status_effects.duplicate()
+	var initial_value = damage
 	for status in statuses:
-		damage = status.handle_damage(damage, caster)
+		damage = status.handle_damage(initial_value, damage, caster)
 	
 	if _get_network_id() == NetworkManager.HOST_ID:
 		var caster_path = ""
@@ -54,9 +61,16 @@ remote func _send_damage(damage: int, caster_path: String) -> void:
 		self.kill(caster)
 
 func apply_heal(heal_amount: int, caster: Mover) -> void:
+	if caster != null:
+		var statuses = caster.status_effects.duplicate()
+		var initial_value = heal_amount
+		for status in statuses:
+			heal_amount = status.handle_heal_given(initial_value, heal_amount, self)
+	
 	var statuses = status_effects.duplicate()
+	var initial_value = heal_amount
 	for status in statuses:
-		heal_amount = status.handle_heal(heal_amount, caster)
+		heal_amount = status.handle_heal(initial_value, heal_amount, caster)
 	if _get_network_id() == NetworkManager.HOST_ID:
 		var caster_path = _caster_to_path(caster)
 		
@@ -75,8 +89,9 @@ remote func _send_heal(heal_amount: int, caster_path: String) -> void:
 
 func apply_heal_recovery(heal_amount: int, caster: Mover) -> void:
 	var statuses = status_effects.duplicate()
+	var initial_value = heal_amount
 	for status in statuses:
-		heal_amount = status.handle_heal_recovery(heal_amount, caster)
+		heal_amount = status.handle_heal_recovery(initial_value, heal_amount, caster)
 	if _get_network_id() == NetworkManager.HOST_ID:
 		var caster_path = _caster_to_path(caster)
 		
@@ -96,7 +111,7 @@ func kill(caster: Mover) -> void:
 	if _get_network_id() == NetworkManager.HOST_ID:
 		var caster_path = _caster_to_path(caster)
 		_send_kill(caster_path)
-		rpc("_send_kill")
+		rpc("_send_kill", caster_path)
 
 remote func _send_kill(caster_path: String) -> void:
 	var caster: Mover = _path_to_caster(caster_path)
@@ -105,8 +120,9 @@ remote func _send_kill(caster_path: String) -> void:
 
 func spend_energy(amount: int, caster: Mover) -> void:
 	var statuses = status_effects.duplicate()
+	var initial_value = amount
 	for status in statuses:
-		amount = status.handle_energy_spent(amount, caster)
+		amount = status.handle_energy_spent(initial_value, amount, caster)
 	if _get_network_id() == NetworkManager.HOST_ID:
 		var caster_path = _caster_to_path(caster)
 		
@@ -124,8 +140,9 @@ remote func _spend_energy(amount: int, caster_path: String) -> void:
 
 func gain_energy(amount: int, caster: Mover) -> void:
 	var statuses = status_effects.duplicate()
+	var initial_value = amount
 	for status in statuses:
-		amount = status.handle_energy_gain(amount, caster)
+		amount = status.handle_energy_gain(initial_value, amount, caster)
 	if _get_network_id() == NetworkManager.HOST_ID:
 		var caster_path = _caster_to_path(caster)
 		

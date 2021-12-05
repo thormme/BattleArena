@@ -23,8 +23,8 @@ func handle_added(target: Mover) -> void:
 	.handle_added(target)
 	_starting_pos = target.transform.origin
 
-func handle_move(movement: Vector3) -> Vector3:
-	.handle_move(movement)
+func handle_move(initial_movement: Vector3, movement: Vector3) -> Vector3:
+	.handle_move(initial_movement, movement)
 	var next_pos = (1 - (duration / _starting_duration)) * (_landing_pos - _starting_pos) + _starting_pos
 	var change_pos = (next_pos - _target.transform.origin) * Engine.iterations_per_second
 	return Vector3(change_pos.x, 0, change_pos.z)

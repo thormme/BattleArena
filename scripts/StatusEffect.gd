@@ -30,22 +30,28 @@ func handle_removed() -> void:
 	emit_signal("status_expired")
 	NetworkManager.remove_node_instance(self.get_path())
 
-func handle_damage(amount: int, caster: Node) -> int: # caster: Mover
+func handle_damage(initial_amount: float, amount: int, caster: Node) -> int: # caster: Mover
 	return amount
 
-func handle_heal(amount: int, caster: Node) -> int:
+func handle_heal(initial_amount: float, amount: int, caster: Node) -> int:
 	return amount
 
-func handle_heal_recovery(amount: int, caster: Node) -> int:
+func handle_damage_given(initial_amount: float, amount: int, target: Node) -> int: # target: Mover
 	return amount
 
-func handle_energy_spent(amount: int, caster: Node) -> int:
+func handle_heal_given(initial_amount: float, amount: int, target: Node) -> int:
 	return amount
 
-func handle_energy_gain(amount: int, caster: Node) -> int:
+func handle_heal_recovery(initial_amount: float, amount: int, caster: Node) -> int:
 	return amount
 
-func handle_move(movement: Vector3) -> Vector3:
+func handle_energy_spent(initial_amount: float, amount: int, caster: Node) -> int:
+	return amount
+
+func handle_energy_gain(initial_amount: float, amount: int, caster: Node) -> int:
+	return amount
+
+func handle_move(initial_movement: Vector3, movement: Vector3) -> Vector3:
 	return movement
 
 func handle_update(delta: float) -> void:
