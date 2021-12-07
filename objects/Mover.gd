@@ -281,6 +281,7 @@ func _get_network_id() -> int:
 	else:
 		return -1
 
+
 class StatusSorter:
 	static func sort_status_priority(a: StatusEffect, b: StatusEffect) -> bool:
 		if a.priority < b.priority:

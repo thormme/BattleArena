@@ -8,6 +8,6 @@ func _update_active(delta, cast_pos) -> void:
 	
 	var team = _owner._team
 	
-	NetworkManager.create_node_instance(AoEAbilityScene.resource_path, [cast_pos, team, _owner])
+	NetworkManager.create_node_instance(AoEAbilityScene.resource_path, [cast_pos, team, _owner.get_path()])
 	
 	_set_active(AbilityState.INACTIVE)

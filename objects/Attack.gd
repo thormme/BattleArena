@@ -11,21 +11,24 @@ export var max_distance = 20
 export var damage = 15
 
 var _initial_position: Vector3
+var _caster_path: String = ""
 var _caster: Mover = null
 
 func init(params: Array):
 	.init([params[2], NetworkManager.HOST_ID])
 	self.callv("_init_Attack", params)
 	
-func _init_Attack(position, direction: Vector3, team: int, caster: Mover) -> void:
-	_caster = caster
+func _init_Attack(position, direction: Vector3, team: int, caster_path: String) -> void:
+	_caster_path = caster_path
 	_initial_position = position
 	transform = transform.translated(position)
 	collision_mask |= team ^ (Team.TEAM_1 | Team.TEAM_2)
 	if detect_immaterial:
 		collision_mask |= collision_mask << 16 # Duplicate lower 16 layers for immaterial sensing
 	_direction = direction
-	
+
+func _enter_tree() -> void:
+	_caster = get_node(_caster_path)
 
 func _get_move_attempt_command() -> Vector3:
 	return _direction

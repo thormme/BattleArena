@@ -114,6 +114,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://stages/MatchStage.gd"
 }, {
+"base": "AoE",
+"class": "Melee",
+"language": "GDScript",
+"path": "res://objects/attacks/Melee.gd"
+}, {
+"base": "Ability",
+"class": "MeleeAbility",
+"language": "GDScript",
+"path": "res://scripts/abilities/MeleeAbility.gd"
+}, {
 "base": "CollisionObject",
 "class": "Mover",
 "language": "GDScript",
@@ -176,6 +186,8 @@ _global_script_class_icons={
 "JumpAbility": "",
 "JumpStatus": "",
 "MatchStage": "",
+"Melee": "",
+"MeleeAbility": "",
 "Mover": "",
 "Pickup": "",
 "Player": "",

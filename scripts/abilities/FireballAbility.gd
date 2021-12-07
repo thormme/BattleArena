@@ -11,6 +11,6 @@ func _update_active(delta, cast_pos) -> void:
 	var team = _owner._team
 	var position = _owner.transform.origin
 	
-	NetworkManager.create_node_instance(FireballScene.resource_path, [position, dir, team, _owner])
+	NetworkManager.create_node_instance(FireballScene.resource_path, [position, dir, team, _owner.get_path()])
 	
 	_set_active(AbilityState.INACTIVE)
