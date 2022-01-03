@@ -14,7 +14,8 @@ func _handle_activate(_active) -> void:
 
 func _update_active(delta, cast_pos) -> void:
 	._update_active(delta, cast_pos)
-	_statuses.jump.set_landing_pos(cast_pos)
+	if _statuses.has("jump"):
+		_statuses.jump.set_landing_pos(cast_pos)
 	var state_machine = get_parent().get_node("Pivot").get_node("Model").get_node("AnimationTree")["parameters/StateMachine/playback"]
 	state_machine.travel("Jump")
 

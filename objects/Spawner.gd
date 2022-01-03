@@ -1,10 +1,10 @@
 extends Spatial
-class_name PlayerSpawner
+class_name Spawner
 
 export(PackedScene) onready var object_path
 export var respawn_delay: float = 25
 export var init_parmeters: Array = []
-export var position_index: int = -1
+export var position_index: int = -1 # Index into the init parameters array that holds the position
 
 onready var _timer: Timer = $Timer
 
@@ -21,7 +21,7 @@ func spawn_node():
 		var params = init_parmeters.duplicate()
 		if position_index >= 0:
 			params[position_index] = transform.origin
-		NetworkManager.create_node_instance(object_path.resource_path, params, get_tree().get_root().get_path(), self.get_path(), "_handle_node_created")
+		NetworkManager.create_node_instance(object_path.resource_path, params, "", self.get_path(), "_handle_node_created")
 
 # Update player_info with new instance
 func _handle_node_created(node_path: String):
@@ -29,7 +29,8 @@ func _handle_node_created(node_path: String):
 	_instance.connect("tree_exited", self, "_handle_instance_removed")
 
 func _handle_instance_removed():
-	_timer.start(respawn_delay)
+	if _timer.is_inside_tree():
+		_timer.start(respawn_delay)
 
 func _on_Timer_timeout():
 	spawn_node()

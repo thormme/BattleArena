@@ -1,5 +1,5 @@
 extends Spatial
-class_name Spawner
+class_name PlayerSpawner
 
 
 export (Mover.Team) var team: int = Mover.Team.TEAM_1
@@ -23,7 +23,7 @@ func _ready():
 
 func spawn_player(id: int):
 	var player_info = NetworkManager.player_info[id]
-	NetworkManager.create_node_instance(PlayerScene.resource_path, [player_info.team, id, self.transform.origin], get_tree().get_root().get_path(), self.get_path(), "_handle_player_created", [id])
+	NetworkManager.create_node_instance(PlayerScene.resource_path, [player_info.team, id, self.transform.origin], "", self.get_path(), "_handle_player_created", [id])
 
 
 # Update player_info with new instance
@@ -31,5 +31,8 @@ func _handle_player_created(player_node_path: String, id: int):
 	if get_tree().has_network_peer():
 		var info = NetworkManager.get_player_info_copy(id)
 		info.instance = player_node_path
-		NetworkManager.update_player_info(id, info)
+		# TODO: Find a better way to do this
+		# This avoids sending the update over the network, since this call already is synced
+		# Otherwise the instance would be set before it exists on the client
+		NetworkManager._update_player_info(id, info)
 

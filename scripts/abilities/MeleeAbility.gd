@@ -12,14 +12,17 @@ func _handle_activate(_active) -> void:
 	
 	var team = _owner._team
 	
-	NetworkManager.create_node_instance(MeleeAbilityScene.resource_path, [team, _owner.get_path()], get_tree().root.get_path(), get_path(), "_handle_attack_instance_created")
+	NetworkManager.create_node_instance(MeleeAbilityScene.resource_path, [team, _owner.get_path(), _owner.facing], "", get_path(), "_handle_attack_instance_created")
 
 func _handle_attack_instance_created(node_path) -> void:
 	_attack_instance = get_node(node_path)
 	_attack_instance.connect("tree_exited", self, "_handle_attack_finished")
 	
-	var dir: Vector3 = _owner._direction # TODO: Pass this as a parameter/make public facing member
-	_attack_instance.transform = _attack_instance.transform.looking_at(_attack_instance.transform.origin + dir.normalized(), Vector3.UP)
+	_attack_instance.transform.origin = _owner.transform.origin
+	
+	#var dir: Vector3 = _owner.facing # TODO: Pass this as a parameter
+	#if dir.length() > 0:
+	#	_attack_instance.transform = _attack_instance.transform.looking_at(_attack_instance.transform.origin + dir, Vector3.UP)
 
 func _update_active(delta, cast_pos) -> void:
 	._update_active(delta, cast_pos)
@@ -27,7 +30,7 @@ func _update_active(delta, cast_pos) -> void:
 	if update_direction && _attack_instance != null:
 		var dir: Vector3 = cast_pos - _attack_instance.transform.origin
 		dir.y = 0
-		_attack_instance.transform = _attack_instance.transform.looking_at(_attack_instance.transform.origin + dir.normalized(), Vector3.UP)
+		_attack_instance.facing = dir
 	
 	
 

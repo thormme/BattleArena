@@ -39,7 +39,6 @@ func set_player(player_node: Player) -> void:
 		_ability.disconnect("charging", self, "_handle_Ability_charging")
 		_ability.disconnect("finished_cooldown", self, "_handle_Ability_finished_cooldown")
 		_ability.disconnect("started_cooldown", self, "_handle_Ability_started_cooldown")
-	_ability = _player.get_node(ability_node_name)
 	_ability.connect("charging", self, "_handle_Ability_charging")
 	_ability.connect("finished_cooldown", self, "_handle_Ability_finished_cooldown")
 	_ability.connect("started_cooldown", self, "_handle_Ability_started_cooldown")

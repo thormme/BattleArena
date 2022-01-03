@@ -52,13 +52,8 @@ func _on_TeamBoxUnassigned_gui_input(event: InputEvent):
 	_update_player_team_event(event, Mover.Team.SPECTATOR)
 
 
-func spawn_player():
-	var id = get_tree().get_network_unique_id()
-	var player_info = NetworkManager.player_info[id]
-	#NetworkManager.create_node_instance(PlayerScene.resource_path, [player_info.team, id], str(id))
-
 func start_match():
-	NetworkManager.goto_scene("res://stages/main.tscn")
+	MatchManager.start_match()
 	
 	# Wait for stage to load before creating playing to let connections by set up
 	#NetworkManager.call_deferred("create_node_instance", [PlayerScene.resource_path, [player_info.team, id], str(id)])

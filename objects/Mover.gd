@@ -38,6 +38,7 @@ export var speed = 14
 export (Array, NodePath) var ability_paths := []
 var velocity = Vector3.ZERO
 var _direction = Vector3.ZERO
+var facing: Vector3 = Vector3.ZERO setget set_facing, get_facing
 var abilities: Array = []
 var status_effects: Array = []
 var peer_owner_id: int = 1
@@ -153,13 +154,12 @@ func _physics_process(delta) -> void:
 	else:
 		self.translate(_direction.normalized() * speed * delta)
 	
-	# Rotate facing direction
-	if _direction != Vector3.ZERO:
-		$Pivot.transform = $Pivot.transform.looking_at($Pivot.transform.origin + _direction.normalized(), Vector3.UP)
-	
 	_cast_pos = _get_cast_position()
 	if _cast_pos == null:
 		_cast_pos = Vector3.ZERO
+	
+	# Rotate facing direction
+	self.facing = _cast_pos - transform.origin
 	
 	var last_ability: Ability = _get_ability(_last_cast_ability)
 	var current_priority = 0
@@ -281,6 +281,14 @@ func _get_network_id() -> int:
 	else:
 		return -1
 
+func set_facing(direction: Vector3) -> void:
+	if direction != Vector3.ZERO:
+		direction.y = 0
+		facing = direction.normalized()
+		$Pivot.transform = $Pivot.transform.looking_at($Pivot.transform.origin + facing, Vector3.UP)
+
+func get_facing() -> Vector3:
+	return facing
 
 class StatusSorter:
 	static func sort_status_priority(a: StatusEffect, b: StatusEffect) -> bool:

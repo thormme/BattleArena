@@ -147,12 +147,12 @@ _global_script_classes=[ {
 "base": "Spatial",
 "class": "PlayerSpawner",
 "language": "GDScript",
-"path": "res://objects/Spawner.gd"
+"path": "res://objects/PlayerSpawner.gd"
 }, {
 "base": "Spatial",
 "class": "Spawner",
 "language": "GDScript",
-"path": "res://objects/PlayerSpawner.gd"
+"path": "res://objects/Spawner.gd"
 }, {
 "base": "Node",
 "class": "StatusEffect",
@@ -207,6 +207,7 @@ config/icon="res://icon.png"
 [autoload]
 
 NetworkManager="*res://objects/NetworkManager.tscn"
+MatchManager="*res://scripts/MatchManager.gd"
 
 [editor_plugins]
 

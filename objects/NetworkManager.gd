@@ -9,7 +9,9 @@ const HOST_ID = 1
 var object_id = 0
 
 var current_scene = null
+var added_node_container = null
 
+var _changing_scene = false
 var _resource_cache: Dictionary = {}
 
 signal player_created(player, local)
@@ -19,7 +21,7 @@ signal player_changed_team(player_id, old_team) # player_id: int, old_team: Move
 signal player_changed_ready(player_id, ready) # player_id: int, ready: bool 
 signal player_changed_instance(player_id, instance) # player_id: int, instance: String 
 signal player_changed_name(player_id, name) # player_id: int, name: String 
-signal player_changed_slot(player_id, slot) # player_id: int, slot: int 
+signal player_changed_slot(player_id, slot) # player_id: int, slot: int
 
 func _ready() -> void:
 	#client_button.connect("button_up", self, "connect_server")
@@ -49,6 +51,9 @@ func _player_connected(id):
 
 # Replace with MultiplayerReplicator.spawn in 4.0
 remote func _create_instance(scene_path, init_params, new_name, parent_node_path: String, callback_instance_path: String = "", callback_name: String = "", callback_params: Array = []) -> void:
+	if _changing_scene:
+		print("Skipping creating ", scene_path)
+		return
 	if get_tree().get_network_unique_id() == HOST_ID:
 		return
 	_create_node_instance(scene_path, init_params, new_name, parent_node_path, callback_instance_path, callback_name, callback_params)
@@ -65,6 +70,8 @@ func _create_node_instance(scene_path, init_params, new_name, parent_node_path: 
 	var instance = scene.instance()
 	instance.call("init", init_params)
 	var parent_node = get_tree().get_root()
+	if added_node_container != null:
+		parent_node = added_node_container
 	if parent_node_path != "":
 		parent_node = get_node(parent_node_path)
 	parent_node.add_child(instance)
@@ -93,12 +100,18 @@ func create_node_instance(scene_path, init_params, parent_node_path: String = ""
 	return instance.get_path()
 
 remote func remove_instance(node_path: String) -> void:
+	if _changing_scene:
+		print("Skipping removing ", node_path)
+		return
 	if get_tree().get_network_unique_id() == HOST_ID:
 		return
 	_remove_node_instance(node_path)
 
 func _remove_node_instance(node_path: String) -> void:
 	print(node_path)
+	var node = get_node_or_null(node_path)
+	if !node:
+		return
 	get_node(node_path).call_deferred("free")
 	
 	print("removed ", node_path)
@@ -166,7 +179,7 @@ func connect_client(ip: String, port: int) -> void:
 	print(get_tree().is_network_server())
 
 
-func goto_scene(path):
+func goto_scene(path: String):
 	# This function will usually be called from a signal callback,
 	# or some other function from the running scene.
 	# Deleting the current scene at this point might be
@@ -175,10 +188,27 @@ func goto_scene(path):
 
 	# The way around this is deferring the load to a later time, when
 	# it is ensured that no code from the current scene is running:
+	
+	var is_connected = get_tree().has_network_peer()
+	
+	if !is_connected:
+		_changing_scene = true
+		call_deferred("_deferred_goto_scene", path)
+		
+	if is_connected && get_tree().get_network_unique_id() == HOST_ID:
+		_changing_scene = true
+		call_deferred("_deferred_goto_scene", path)
+		rpc("_remote_goto_scene", path)
 
-	call_deferred("_deferred_goto_scene", path)
 
-func _deferred_goto_scene(path):
+remote func _remote_goto_scene(path: String):
+	var from_host = get_tree().get_rpc_sender_id() == 1
+	
+	if from_host:
+		_changing_scene = true
+		call_deferred("_deferred_goto_scene", path)
+
+func _deferred_goto_scene(path: String):
 	# Immediately free the current scene,
 	# there is no risk here.
 	current_scene.free()
@@ -188,12 +218,19 @@ func _deferred_goto_scene(path):
 
 	# Instance the new scene.
 	current_scene = s.instance()
+	
+	# Add runtime created object container
+	added_node_container = Node.new()
+	added_node_container.name = "Added"
+	current_scene.add_child(added_node_container)
 
 	# Add it to the active scene, as child of root.
 	get_tree().get_root().add_child(current_scene)
 
 	# Optional, to make it compatible with the SceneTree.change_scene() API.
 	get_tree().set_current_scene(current_scene)
+	
+	_changing_scene = false
 
 func _update_player_info(player_id: int, info: Dictionary):
 		var player_info = NetworkManager.player_info[player_id]
@@ -244,6 +281,9 @@ func get_player_info_copy(player_id):
 	for key in player_info[player_id].keys():
 		new_info[key] = player_info[player_id][key]
 	return new_info
+
+func get_player_info_read_only(player_id):
+	return player_info[player_id]
 	
 # Get read only copy of player info
 func get_current_player_info():

@@ -19,7 +19,10 @@ func _ready():
 
 func set_max(value: float):
 	.set_max(value)
-	segment_viewport.size.x = self.rect_size.x / (self.max_value / SEGMENT_SIZE)
+	if self.max_value <= 0:
+		segment_viewport.size.x = 0
+	else:
+		segment_viewport.size.x = self.rect_size.x / (self.max_value / SEGMENT_SIZE)
 	
 	
 func _set_texture():
